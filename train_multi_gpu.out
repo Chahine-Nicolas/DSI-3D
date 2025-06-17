@@ -1,0 +1,33 @@
+Running in single-process mode (not distributed).
+ pour créer / vider le txt
+============================================
+do_eval:False
+do_train:False
+do_eval_partial:False
+do_preprocess: False
+do_dump_dict_gt: False
+============================================
+RANDOM SEED:-1
+dataset_cfg.DATASET  KittiDataset_2012
+__all__[dataset_cfg.DATASET]  <class 'extern.pcdet.datasets.kitti_loggnet.kitti_dataset_loggnet.KittiDataset_2012'>
+dataset_cfg  {'DATASET': 'KittiDataset_2012', 'SEQ': '22', 'DATA_PATH': '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/', 'BACKEND': {'NAME': 'HardDiskBackend'}, 'POINT_CLOUD_RANGE': [0, -39.68, -3, 69.12, 39.68, 1], 'DATA_SPLIT': {'train': 'train', 'test': 'val'}, 'GET_ITEM_LIST': ['points'], 'TRAIN_ONLY_REVISITED': False, 'DO_SELF_EVAL': False, 'LABEL_TYPE': 'hilbert', 'DATA_AUGMENTOR': {'DISABLE_AUG_LIST': ['placeholder'], 'AUG_CONFIG_LIST': [{'NAME': 'random_world_flip', 'PROBABILITY': 0, 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'PROBABILITY': 0, 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'PROBABILITY': 0, 'WORLD_SCALE_RANGE': [0.95, 1.05]}]}, 'POINT_FEATURE_ENCODING': {'encoding_type': 'absolute_coordinates_encoding', 'used_feature_list': ['x', 'y', 'z', 'intensity'], 'src_feature_list': ['x', 'y', 'z', 'intensity']}, 'DATA_PROCESSOR': [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': False, 'test': False}}, {'NAME': 'calculate_grid_size', 'VOXEL_SIZE': [0.32, 0.32, 4]}], '_BASE_CONFIG_': './kitti_dataset_hilbert.yaml'}
+class_names  ['Car', 'Pedestrian', 'Cyclist']
+root_path  None
+training  True
+logger  <Logger extern.pcdet.utils.common_utils (INFO)>
+ini
+ini
+dataset_cfg.DATASET  KittiDataset_2012
+__all__[dataset_cfg.DATASET]  <class 'extern.pcdet.datasets.kitti_loggnet.kitti_dataset_loggnet.KittiDataset_2012'>
+dataset_cfg  {'DATASET': 'KittiDataset_2012', 'SEQ': '22', 'DATA_PATH': '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/', 'BACKEND': {'NAME': 'HardDiskBackend'}, 'POINT_CLOUD_RANGE': [0, -39.68, -3, 69.12, 39.68, 1], 'DATA_SPLIT': {'train': 'train', 'test': 'val'}, 'GET_ITEM_LIST': ['points'], 'TRAIN_ONLY_REVISITED': False, 'DO_SELF_EVAL': False, 'LABEL_TYPE': 'hilbert', 'DATA_AUGMENTOR': {'DISABLE_AUG_LIST': ['placeholder'], 'AUG_CONFIG_LIST': [{'NAME': 'random_world_flip', 'PROBABILITY': 0, 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'PROBABILITY': 0, 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'PROBABILITY': 0, 'WORLD_SCALE_RANGE': [0.95, 1.05]}]}, 'POINT_FEATURE_ENCODING': {'encoding_type': 'absolute_coordinates_encoding', 'used_feature_list': ['x', 'y', 'z', 'intensity'], 'src_feature_list': ['x', 'y', 'z', 'intensity']}, 'DATA_PROCESSOR': [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': False, 'test': False}}, {'NAME': 'calculate_grid_size', 'VOXEL_SIZE': [0.32, 0.32, 4]}], '_BASE_CONFIG_': './kitti_dataset_hilbert.yaml'}
+class_names  ['Car', 'Pedestrian', 'Cyclist']
+root_path  None
+training  False
+logger  <Logger extern.pcdet.utils.common_utils (INFO)>
+ini
+ini
+
+=========  loader train ===========
+ln : 18236
+> /lustre/fswork/projects/rech/dki/ujo91el/code/these_place_reco_optim/extern/pcdet/datasets/kitti_loggnet/kitti_dataset_loggnet.py(393)__getitem__()
+(Pdb) 

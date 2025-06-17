@@ -1,0 +1,180 @@
+ pour créer / vider le txt
+============================================
+do_eval:False
+do_train:False
+do_eval_partial:False
+do_preprocess: False
+do_dump_dict_gt: False
+============================================
+RANDOM SEED:-1
+dataset_cfg.DATASET  KittiDataset_2012
+__all__[dataset_cfg.DATASET]  <class 'extern.pcdet.datasets.kitti_loggnet.kitti_dataset_loggnet.KittiDataset_2012'>
+dataset_cfg  {'DATASET': 'KittiDataset_2012', 'SEQ': '06', 'DATA_PATH': '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/', 'BACKEND': {'NAME': 'HardDiskBackend'}, 'POINT_CLOUD_RANGE': [0, -39.68, -3, 69.12, 39.68, 1], 'DATA_SPLIT': {'train': 'train', 'test': 'val'}, 'GET_ITEM_LIST': ['points'], 'TRAIN_ONLY_REVISITED': False, 'DO_SELF_EVAL': False, 'LABEL_TYPE': 'hilbert', 'DATA_AUGMENTOR': {'DISABLE_AUG_LIST': ['placeholder'], 'AUG_CONFIG_LIST': [{'NAME': 'random_world_flip', 'PROBABILITY': 0, 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'PROBABILITY': 0, 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'PROBABILITY': 0, 'WORLD_SCALE_RANGE': [0.95, 1.05]}]}, 'POINT_FEATURE_ENCODING': {'encoding_type': 'absolute_coordinates_encoding', 'used_feature_list': ['x', 'y', 'z', 'intensity'], 'src_feature_list': ['x', 'y', 'z', 'intensity']}, 'DATA_PROCESSOR': [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': False, 'test': False}}, {'NAME': 'calculate_grid_size', 'VOXEL_SIZE': [0.32, 0.32, 4]}], '_BASE_CONFIG_': './kitti_dataset_hilbert.yaml'}
+class_names  ['Car', 'Pedestrian', 'Cyclist']
+root_path  None
+training  True
+logger  <Logger extern.pcdet.utils.common_utils (INFO)>
+ini
+ini
+dataset_cfg.DATASET  KittiDataset_2012
+__all__[dataset_cfg.DATASET]  <class 'extern.pcdet.datasets.kitti_loggnet.kitti_dataset_loggnet.KittiDataset_2012'>
+dataset_cfg  {'DATASET': 'KittiDataset_2012', 'SEQ': '06', 'DATA_PATH': '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/', 'BACKEND': {'NAME': 'HardDiskBackend'}, 'POINT_CLOUD_RANGE': [0, -39.68, -3, 69.12, 39.68, 1], 'DATA_SPLIT': {'train': 'train', 'test': 'val'}, 'GET_ITEM_LIST': ['points'], 'TRAIN_ONLY_REVISITED': False, 'DO_SELF_EVAL': False, 'LABEL_TYPE': 'hilbert', 'DATA_AUGMENTOR': {'DISABLE_AUG_LIST': ['placeholder'], 'AUG_CONFIG_LIST': [{'NAME': 'random_world_flip', 'PROBABILITY': 0, 'ALONG_AXIS_LIST': ['x']}, {'NAME': 'random_world_rotation', 'PROBABILITY': 0, 'WORLD_ROT_ANGLE': [-0.78539816, 0.78539816]}, {'NAME': 'random_world_scaling', 'PROBABILITY': 0, 'WORLD_SCALE_RANGE': [0.95, 1.05]}]}, 'POINT_FEATURE_ENCODING': {'encoding_type': 'absolute_coordinates_encoding', 'used_feature_list': ['x', 'y', 'z', 'intensity'], 'src_feature_list': ['x', 'y', 'z', 'intensity']}, 'DATA_PROCESSOR': [{'NAME': 'mask_points_and_boxes_outside_range', 'REMOVE_OUTSIDE_BOXES': True}, {'NAME': 'shuffle_points', 'SHUFFLE_ENABLED': {'train': False, 'test': False}}, {'NAME': 'calculate_grid_size', 'VOXEL_SIZE': [0.32, 0.32, 4]}], '_BASE_CONFIG_': './kitti_dataset_hilbert.yaml'}
+class_names  ['Car', 'Pedestrian', 'Cyclist']
+root_path  None
+training  False
+logger  <Logger extern.pcdet.utils.common_utils (INFO)>
+ini
+ini
+
+=========  loader train ===========
+ln : 1101
+id:000000 gt:-1 labels:93560439
+id:000001 gt:-1 labels:93576472
+id:000002 gt:-1 labels:93599717
+id:000003 gt:-1 labels:93640825
+id:000004 gt:-1 labels:93655581
+id:000005 gt:-1 labels:93682502
+id:000006 gt:-1 labels:980064678
+id:000007 gt:-1 labels:980059329
+id:000008 gt:-1 labels:980086272
+id:000009 gt:-1 labels:980100200
+id:000010 gt:-1 labels:980142345
+id:000011 gt:-1 labels:980165087
+id:000012 gt:-1 labels:980181131
+id:000013 gt:-1 labels:980388559
+id:000014 gt:-1 labels:980410323
+id:000015 gt:-1 labels:980432317
+id:000016 gt:-1 labels:980475001
+id:000017 gt:-1 labels:980491941
+id:000018 gt:-1 labels:980515220
+id:000019 gt:-1 labels:981378304
+id:000020 gt:-1 labels:981389261
+id:000021 gt:-1 labels:981397516
+id:000022 gt:-1 labels:981408477
+id:000023 gt:-1 labels:981465531
+id:000024 gt:-1 labels:975868301
+id:000025 gt:-1 labels:975855199
+id:000026 gt:-1 labels:975806009
+id:000027 gt:-1 labels:975789221
+id:000028 gt:-1 labels:975608927
+id:000029 gt:-1 labels:975594377
+id:000030 gt:-1 labels:975545137
+id:000031 gt:-1 labels:975528669
+id:000032 gt:-1 labels:974824098
+id:000033 gt:-1 labels:974809147
+id:000034 gt:-1 labels:974760024
+id:000035 gt:-1 labels:974744455
+id:000036 gt:-1 labels:974564118
+id:000037 gt:-1 labels:974558417
+id:000038 gt:-1 labels:974541992
+id:000039 gt:-1 labels:974493207
+id:000040 gt:-1 labels:974477049
+id:000041 gt:-1 labels:994065293
+id:000042 gt:-1 labels:994071403
+id:000043 gt:-1 labels:994291927
+id:000044 gt:-1 labels:994310812
+id:000045 gt:-1 labels:994316259
+id:000046 gt:-1 labels:994373550
+id:000047 gt:-1 labels:993063226
+id:000048 gt:-1 labels:993006537
+id:000049 gt:-1 labels:993000479
+id:000050 gt:-1 labels:992984793
+id:000051 gt:-1 labels:992761319
+id:000052 gt:-1 labels:992755507
+id:000053 gt:-1 labels:992739581
+id:000054 gt:-1 labels:992733635
+id:000055 gt:-1 labels:992674316
+id:000056 gt:-1 labels:992658135
+id:000057 gt:-1 labels:992652612
+id:000058 gt:-1 labels:1003834657
+id:000059 gt:-1 labels:1003816697
+id:000060 gt:-1 labels:1003807067
+id:000061 gt:-1 labels:1003757201
+id:000062 gt:-1 labels:1003747051
+id:000063 gt:-1 labels:1003730729
+id:000064 gt:-1 labels:1003509881
+....
+========= end loader ===========
+
+=========  loader eval ===========
+ln : 1101
+id:000000 gt:-1 labels:93560439
+id:000001 gt:-1 labels:93576472
+id:000002 gt:-1 labels:93599717
+id:000003 gt:-1 labels:93640825
+id:000004 gt:-1 labels:93655581
+id:000005 gt:-1 labels:93682502
+id:000006 gt:-1 labels:980064678
+id:000007 gt:-1 labels:980059329
+id:000008 gt:-1 labels:980086272
+id:000009 gt:-1 labels:980100200
+id:000010 gt:-1 labels:980142345
+id:000011 gt:-1 labels:980165087
+id:000012 gt:-1 labels:980181131
+id:000013 gt:-1 labels:980388559
+id:000014 gt:-1 labels:980410323
+id:000015 gt:-1 labels:980432317
+id:000016 gt:-1 labels:980475001
+id:000017 gt:-1 labels:980491941
+id:000018 gt:-1 labels:980515220
+id:000019 gt:-1 labels:981378304
+id:000020 gt:-1 labels:981389261
+id:000021 gt:-1 labels:981397516
+id:000022 gt:-1 labels:981408477
+id:000023 gt:-1 labels:981465531
+id:000024 gt:-1 labels:975868301
+id:000025 gt:-1 labels:975855199
+id:000026 gt:-1 labels:975806009
+id:000027 gt:-1 labels:975789221
+id:000028 gt:-1 labels:975608927
+id:000029 gt:-1 labels:975594377
+id:000030 gt:-1 labels:975545137
+id:000031 gt:-1 labels:975528669
+id:000032 gt:-1 labels:974824098
+id:000033 gt:-1 labels:974809147
+id:000034 gt:-1 labels:974760024
+id:000035 gt:-1 labels:974744455
+id:000036 gt:-1 labels:974564118
+id:000037 gt:-1 labels:974558417
+id:000038 gt:-1 labels:974541992
+id:000039 gt:-1 labels:974493207
+id:000040 gt:-1 labels:974477049
+id:000041 gt:-1 labels:994065293
+id:000042 gt:-1 labels:994071403
+id:000043 gt:-1 labels:994291927
+id:000044 gt:-1 labels:994310812
+id:000045 gt:-1 labels:994316259
+id:000046 gt:-1 labels:994373550
+id:000047 gt:-1 labels:993063226
+id:000048 gt:-1 labels:993006537
+id:000049 gt:-1 labels:993000479
+id:000050 gt:-1 labels:992984793
+id:000051 gt:-1 labels:992761319
+id:000052 gt:-1 labels:992755507
+id:000053 gt:-1 labels:992739581
+id:000054 gt:-1 labels:992733635
+id:000055 gt:-1 labels:992674316
+id:000056 gt:-1 labels:992658135
+id:000057 gt:-1 labels:992652612
+id:000058 gt:-1 labels:1003834657
+id:000059 gt:-1 labels:1003816697
+id:000060 gt:-1 labels:1003807067
+id:000061 gt:-1 labels:1003757201
+id:000062 gt:-1 labels:1003747051
+id:000063 gt:-1 labels:1003730729
+id:000064 gt:-1 labels:1003509881
+....
+========= end loader ===========
+model_cfg:DSI
+checkpoint_dir  /lustre/fswork/projects/rech/dki/ujo91el/checkpoints//git_hilbert_git_hilbert_seq_06_80_20_contrast_quad_hilbert_n3_lr4
+train_set.labeltype  hilbert
+train_indices  880
+val_indices  110
+train_subset_shuffled  880
+train_subset_shuffled  ['velodyne', '000362.bin'] ['velodyne', '000903.bin'] ['velodyne', '000089.bin']
+val_subset  110
+val_subset  ['velodyne', '000005.bin'] ['velodyne', '000015.bin'] ['velodyne', '000025.bin']
+new_train_batch_size  256
+new_eval_batch_size  64
+ id_max_length  18
+train from scratch :  False
