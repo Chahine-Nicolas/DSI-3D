@@ -370,6 +370,7 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
         ### Load LiDAR Data (if required)
         if "points" in get_item_list:
             input_dict['points'] = self.get_lidar(lidar_path)
+
             input_dict.update(self.get_dict_dsi(index))  # Merge dictionaries
 
             # Extract LiDAR values for `lidar_values`
@@ -425,6 +426,13 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
                 lidar_val[key] = np.stack(val, axis=0)  
 
         return lidar_val
-        """
-            
+        """ 
+        
+        desc_from_logg = False 
+        desc_from_logg = True
+        
+        if desc_from_logg == True:
+            from .logg3d_net_desc import get_logg3d_net_desc
+            eval_seq = '06'
+            data_dict = get_logg3d_net_desc(data_dict, eval_seq)
         return data_dict

@@ -85,4 +85,8 @@ def build_dataloader(dataset_cfg, class_names, batch_size, dist, root_path=None,
         shuffle=(sampler is None) and training, collate_fn=dataset.collate_batch,
         drop_last=drop_last, sampler=sampler, timeout=0
     )
+    if training == False:
+        len(dataset[0]['points'])
+
+        
     return dataset, dataloader, sampler

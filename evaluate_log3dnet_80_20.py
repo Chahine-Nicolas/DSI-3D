@@ -293,7 +293,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         beam_ids = None
         if eval_set.labeltype != 'log3dnet' :
             prep_timer.tic()   
-            input_data= data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1)))  
+            input_data = data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1)))  
             prep_timer.toc()
             #input_data = input_data_old 
             

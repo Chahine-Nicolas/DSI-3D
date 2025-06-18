@@ -449,7 +449,7 @@ class IndexingCollator(DataCollatorWithPadding):
         # Process LIDAR values
         lidar_values = self._prepare_lidar_values(features, device)
         inputs['lidar_values'] = lidar_values
-
+        
         # Load LIDAR data to GPU if available
         if device == "cuda":
             load_data_to_gpu(inputs['lidar_values'])
@@ -463,12 +463,15 @@ class IndexingCollator(DataCollatorWithPadding):
         
         for key, val in feature_dict.items():
             if key == 'points':
+        
                 padded_points = [torch.nn.functional.pad(
                     torch.tensor(coor, dtype=torch.float32),
                     (0, 0, 1, 0), 
                     value=i  
                 ) for i, coor in enumerate(val)]
                 lidar_val[key] = torch.cat(padded_points, dim=0).to(device)
+            elif key == 'desc':
+                lidar_val[key] = val 
             else:
                 lidar_val[key] = np.stack(val, axis=0)  
         
@@ -565,7 +568,6 @@ def main():
     device = "cuda" if torch.cuda.is_available() else "cpu"
 
     args, cfg = parse_config()
-    
     ID_MAX_LENGTH = args.id_max_length 
     MAX_LENGTH = ID_MAX_LENGTH
 
@@ -687,9 +689,6 @@ def main():
 
     train_set, train_loader, _ = initialize_dataloader(cfg, args, logger, training=True)
     eval_set, eval_loader, _ = initialize_dataloader(cfg, args, logger, training=False)
-
-
-
     
     # Determine subset lengths
     train_len = (

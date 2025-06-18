@@ -737,12 +737,8 @@ class GitVisionAttention(nn.Module):
 
         return attn_output, attn_weights_reshaped
 
+
 # here was gitvisonencoder
-
-
-
-
-
 
 class GitLidarModel(GitPreTrainedModel):
     main_input_name = "points"
@@ -859,265 +855,181 @@ class GitLidarModel(GitPreTrainedModel):
         use_batch_norm = False
         use_duplicate_vect = False
         
-        #print("use_log3dnet, use_cache_sop , use_cache_gdmae, use_positional, use_batch_norm ", use_log3dnet, use_cache_sop , use_cache_gdmae, use_positional, use_batch_norm)
-        #import pdb; pdb.set_trace()                                
-        if True :
-            """
-            ret_dict = lidar_values
-            nnv = lidar_values['frame_id'][:,1]
-            xx_sop_log3d = self.load_tensor(nnv,"logg_desc")
-            #xx_sop_log3d = self.load_pickle(nn,"logg_desc_pert")
-            xx_final_ori=xx_sop_log3d.unsqueeze(1).repeat(1, 1, 1).to(dtype=torch.float32)
-            print_module_stats("xx_final_ori",xx_final_ori)
-            if use_batch_norm : 
-                xx_final_ori = self.post_layernorm(xx_final_ori)
-            print_module_stats("xx_final_ori_norm", xx_final_ori)
-            """
-            #import pdb; pdb.set_trace()
-            
-            #xx_final = xx_final_ori
-            em_len=int((TOT_LEN_HARDCODED)*3+1)
-            # for ii in range(0,em_len) :
-            #     xx_final = torch.cat([xx_final,torch.cos(math.pow(2,ii)*xx_final_ori)],dim=1)
+        em_len=int((TOT_LEN_HARDCODED)*3+1)
 
-            ##################################################################################  
-            # load desc from loggnet
-            ##################################################################################    
-            desc_from_logg = False 
-            #desc_from_logg = True
+        ##################################################################################  
+        # load desc from loggnet
+        ##################################################################################    
+        desc_from_logg = False 
+        desc_from_logg = True
+        
+        if desc_from_logg == True:
+
+            output_desc_computed = lidar_values['desc'][0]
+
             
+            """
+            from .logg3d_net_desc import get_logg3d_net_desc
+            eval_seq = '06'
+            output_desc_computed = get_logg3d_net_desc(eval_seq, lidar_values, input_mod, voxel_size=0.1)
+            """
+    
+            """
             
-            
-            if desc_from_logg == True:
+            import numpy as np
+            from models.pipeline_factory import get_pipeline
+            #from config.eval_config import get_config_eval
+            from models.pipelines.pipeline_utils import make_sparse_tensor
+            import random
              
-                eval_seq = '06'
-                import numpy as np
-                from models.pipeline_factory import get_pipeline
-                #from config.eval_config import get_config_eval
-                from models.pipelines.pipeline_utils import make_sparse_tensor
-                import random
-                 
-                #cfg = get_config_eval()
-                voxel_size = 0.1
-                # Get model
-                
-                model = get_pipeline('LOGG3D')
-
-                if eval_seq == '00':
-                    save_path =  "/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth"
-                elif eval_seq == '06':
-                    save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth'
-                
-    
-                checkpoint = torch.load(save_path)  # ,map_location='cuda:0')
-                model.load_state_dict(checkpoint['model_state_dict'])
-    
-                epoch = checkpoint['epoch']
-                loss = checkpoint['loss']
+            #cfg = get_config_eval()
+            voxel_size = 0.1
+            # Get model
             
-                model = model.cuda()
-                model.eval()
-    
-                def random_rotate(xyzr, r_angle=360, is_random=True, add_noise=True, rand_tr=False):
-                    # If is_random = True: Rotate about z-axis by random angle upto 'r_angle'.
-                    # Else: Rotate about z-axis by fixed angle 'r_angle'.
-                    r_angle = (np.pi/180) * r_angle
-                    if is_random:
-                    	r_angle = r_angle*np.random.uniform()
-                    cos_angle = np.cos(r_angle)
-                    sin_angle = np.sin(r_angle)
-                    rot_matrix = np.array([[cos_angle, -sin_angle, 0],
-                                       	[sin_angle, cos_angle, 0],
-                                       	[0,         	0,  	1]])
-                    scan = xyzr[:, :3]
-                    int = xyzr[:, 3].reshape((-1, 1))
-                    augmented_scan = np.dot(scan, rot_matrix)
-                    
-                    if add_noise:
-                    	n_sigma = 0.01  # Add gaussian noise
-                    	noise = np.clip(n_sigma * np.random.randn(*
-                                    	augmented_scan.shape), -0.03, 0.03)
-                    	augmented_scan = augmented_scan + noise
-                    
-                    if rand_tr:
-                    	tr_xy_max, tr_z_max = 1.5, 0.25
-                    	tr_xy = np.clip(np.random.randn(1, 2), -tr_xy_max, tr_xy_max)
-                    	tr_z = np.clip(0.1*np.random.randn(1, 1), -tr_z_max, tr_z_max)
-                    	tr = np.hstack((tr_xy, tr_z))
-                    	augmented_scan = augmented_scan + tr
-                    
-                    augmented_scan = np.hstack((augmented_scan, int))
-                    return augmented_scan.astype(np.float32)
-                    
-                def occlude_scan(scan, angle=30):
-                    # Remove points within a sector of fixed angle (degrees) and random heading direction.
-                    thetas = (180/np.pi) * np.arctan2(scan[:, 1], scan[:, 0])
-                    heading = (180-angle/2)*np.random.uniform(-1, 1)
-                    occ_scan = np.vstack(
-                    	(scan[thetas < (heading - angle/2)], scan[thetas > (heading + angle/2)]))
-                    return occ_scan.astype(np.float32)
-                
-                # lidar_values['points']
-                
-                lidar_file = '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/'+eval_seq+'/velodyne/' + lidar_values[input_mod][0][1]
-                lidar_pc = np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, 4)
+            model = get_pipeline('LOGG3D')
 
-                random_rotation = True
-                random_occlusion = False
-                random_scale = False
-                max_scale = 1.2
-                min_scale = 0.8
+            if eval_seq == '00' or eval_seq == '22' :
+                save_path =  "/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth"
                 
-                lidar_pc2 = lidar_pc
-                if random_rotation:
-                	lidar_pc2 = random_rotate(lidar_pc2)
-                if random_occlusion:
-                	lidar_pc2 = occlude_scan(lidar_pc2)
-                if random_scale and random.random() < 0.95:
-                	scale = min_scale + \
-                    	(max_scale - min_scale) * random.random()
-                	lidar_pc2 = scale * lidar_pc2
-    
-                input2 = make_sparse_tensor(lidar_pc2, voxel_size).cuda()
-                output_desc2, output_feats2 = model(input2)  # .squeeze()
-                #output_feats2 = output_feats2[0]
-                #global_descriptor2 = output_desc2.cpu().detach().numpy()
+            elif eval_seq == '02':
+                save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_05-55-20_3n24h_Kitti_v10_q29_10s2_262448.pth'
+            elif eval_seq == '05':
+                save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_06-11-58_3n24h_Kitti_v10_q29_10s5_262449.pth'
+                
+            elif eval_seq == '06':
+                save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth'
+            elif eval_seq == '07':
+                save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_08-34-46_3n24h_Kitti_v10_q29_10s7_262451.pth'
+            elif eval_seq == '08':
+                save_path =  '/lustre/fswork/projects/rech/dki/ujo91el/checkpoint/LoGG3D-NET/checkpoints/kitti_10cm_loo/2021-09-14_20-28-22_3n24h_Kitti_v10_q29_10s8_263169.pth'
+
+                
+            checkpoint = torch.load(save_path)  # ,map_location='cuda:0')
+            model.load_state_dict(checkpoint['model_state_dict'])
+
+            epoch = checkpoint['epoch']
+            loss = checkpoint['loss']
+        
+            model = model.cuda()
+            model.eval()
+
+            def random_rotate(xyzr, r_angle=360, is_random=True, add_noise=True, rand_tr=False):
+                # If is_random = True: Rotate about z-axis by random angle upto 'r_angle'.
+                # Else: Rotate about z-axis by fixed angle 'r_angle'.
+                r_angle = (np.pi/180) * r_angle
+                if is_random:
+                    r_angle = r_angle*np.random.uniform()
+                cos_angle = np.cos(r_angle)
+                sin_angle = np.sin(r_angle)
+                rot_matrix = np.array([[cos_angle, -sin_angle, 0],
+                                    [sin_angle, cos_angle, 0],
+                                    [0,         	0,  	1]])
+                scan = xyzr[:, :3]
+                int = xyzr[:, 3].reshape((-1, 1))
+                augmented_scan = np.dot(scan, rot_matrix)
+                
+                if add_noise:
+                    n_sigma = 0.01  # Add gaussian noise
+                    noise = np.clip(n_sigma * np.random.randn(*
+                                    augmented_scan.shape), -0.03, 0.03)
+                    augmented_scan = augmented_scan + noise
+                
+                if rand_tr:
+                    tr_xy_max, tr_z_max = 1.5, 0.25
+                    tr_xy = np.clip(np.random.randn(1, 2), -tr_xy_max, tr_xy_max)
+                    tr_z = np.clip(0.1*np.random.randn(1, 1), -tr_z_max, tr_z_max)
+                    tr = np.hstack((tr_xy, tr_z))
+                    augmented_scan = augmented_scan + tr
+                
+                augmented_scan = np.hstack((augmented_scan, int))
+                return augmented_scan.astype(np.float32)
+                
+            def occlude_scan(scan, angle=30):
+                # Remove points within a sector of fixed angle (degrees) and random heading direction.
+                thetas = (180/np.pi) * np.arctan2(scan[:, 1], scan[:, 0])
+                heading = (180-angle/2)*np.random.uniform(-1, 1)
+                occ_scan = np.vstack(
+                    (scan[thetas < (heading - angle/2)], scan[thetas > (heading + angle/2)]))
+                return occ_scan.astype(np.float32)
             
-            if True :
-                ret_dict = lidar_values
-                if desc_from_logg == False:
-                    nn = lidar_values[input_mod][:,1] # change 'frame_id' to input_mod
-                    #import pdb; pdb.set_trace()
-                    #print("input_mod ", input_mod, " nn ", nn[0])
-                    xx_sop_log3d = self.load_tensor(nn,"logg_desc")
-                else:
-                   xx_sop_log3d = output_desc2.reshape([1, -1]) 
-                    
-                #xx_final_ori = xx_sop_log3d.unsqueeze(1).repeat(1, 1, 1).to(dtype=torch.float32)
-                xx_final_ori = xx_sop_log3d.unsqueeze(1).to(dtype=torch.float32)
-                del xx_sop_log3d
-                print_module_stats("xx_final_ori",xx_final_ori)
-                if use_batch_norm : 
-                    xx_final_ori = self.post_layernorm(xx_final_ori)
-                print_module_stats("xx_final_ori_norm", xx_final_ori)
-
-
-            ##################################################################################  
-            # load desc from loggnet
-            ##################################################################################   
             
-            for ii in range(0,em_len) : # (0, 4)
-                #denominator = np.power(10000, 2*ii/em_len)
-                pii = math.floor(ii/2)
-                if use_positional : 
-                    if use_duplicate_vect :
-                         xx_embed = xx_final_ori
-                    
-                    elif ii % 2 == 0 :
-                        xx_embed = torch.sin(math.pow(2,pii)*xx_final_ori)
-                    else :
-                        xx_embed = torch.cos(math.pow(2,pii)*xx_final_ori)
-                else :
-                    xx_embed = xx_final_ori
-                    
-                if ii % 3 == 0 : # si dernier passage
-                    embed_stack = xx_embed
-                else :
-                    embed_stack = torch.cat([embed_stack,xx_embed],dim=2)
+            lidar_file = '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/'+eval_seq+'/velodyne/' + lidar_values[input_mod][0][1]
+            lidar_pc = np.fromfile(str(lidar_file), dtype=np.float32).reshape(-1, 4)
 
-                if ii % 3 == 2 :
-                    if ii == 2 :
-                        xx_final = embed_stack
-                    else :
-                        xx_final = torch.cat([xx_final,embed_stack],dim=1)
-                    #print_module_stats("xx_final_posi" + str(pii),xx_final[:,-1,:])
+            random_rotation = False
+            random_occlusion = False
+            random_scale = False
+            max_scale = 1.2
+            min_scale = 0.8
+            
+            lidar_pc2 = lidar_pc
+            if random_rotation:
+                lidar_pc2 = random_rotate(lidar_pc2)
+            if random_occlusion:
+                lidar_pc2 = occlude_scan(lidar_pc2)
+            if random_scale and random.random() < 0.95:
+                scale = min_scale + \
+                    (max_scale - min_scale) * random.random()
+                lidar_pc2 = scale * lidar_pc2
 
-            #import pdb; pdb.set_trace()                                                    
-            print_module_stats("xx_final_full" + str(ii),xx_final)
-                                                            
-            xx_final = xx_final.to(dtype=torch.float32)
-        else :
-            """
-            ret_dict = self.lidar_model(lidar_values)
-            nn = ret_dict[input_mod][:,1]
-            xx = None
-            if use_cache_gdmae : 
-                xx_cache = self.load_tensor(nn,"gdmae")
-                xx = xx_cache
-
-            #import pdb; pdb.set_trace()                                
-
-            if xx is None :                         
-                xx = ret_dict['spatial_features']
-                if use_cache_gdmae :
-                    self.save_tensor(xx,nn,"gdmae")
-
-            lab = "raw"
-            if self.use_sop :
-                lab = "sop"
-
-            ## For debuging
-            if False :
-                xx_no_cache = ret_dict['spatial_features']
-                xx_cache = self.load_tensor(nn,"gdmae")
-                print("------------------------------------")
-                print("nn => " + str(nn))        
-                print_module_stats("points",lidar_values['points'])
-                print_module_stats("xx_cache",xx_cache)
-                print_module_stats("xx_no_cache",xx_no_cache)
-                #import pdb; pdb.set_trace()                                
-
-            is_first_it = False
-
-            batch_sz = lidar_values['batch_size']
-
-            xx2 = xx.flatten(2) # torch.Size([32, 128, 53568])
-            xx2 = xx2.permute(0, 2, 1) # torch.Size([32, 53568, 128])
-            batch_sz, nfeat, dimfeat = xx2.shape
-            xx2 = torch.reshape(xx2, (batch_sz, -1, nfeat, dimfeat)) #torch.Size([32, 1, 53568, 128])  
-
-
-            xx_sop  = None
-            if use_cache_sop : 
-                xx_sop = self.load_tensor(nn,lab)
-                xx_sop_proj = xx_sop[:,:126,:].reshape(batch_sz,-1,768)
-
-
-            if xx_sop is None : 
-                if self.use_sop  : 
-                    xx_sop = self.sop(xx2).to(dtype=xx.dtype)
-                if use_cache_sop :                 
-                    self.save_tensor(xx_sop,nn,lab)
-
-            if True : 
-                xx_sop_proj = xx_sop[:,:126,:].reshape(batch_sz,-1,768)
-                xx_proj_1 = self.lidar_projection(xx)
-                xx_proj_1_norm = self.bt_norm2d(xx_proj_1)
-                xx_proj_2 = xx_proj_1_norm.flatten(2).transpose(1, 2)
-
-                xx_sop_proj_0_norm = torch.nn.functional.normalize(xx_sop_proj,p=2, dim=-1)  
-                del xx_sop_proj
-                xx_cat =  torch.cat((xx_proj_2,xx_sop_proj_0_norm),dim=1)
-                # xx_cat = torch.cat(
-                #     (xx_sop_proj,xx_sop_proj,xx_sop_proj,xx_sop_proj,
-                #      xx_sop_proj,xx_sop_proj,xx_sop_proj,xx_sop_proj,
-                #      xx_sop_proj,xx_sop_proj,xx_sop_proj,xx_sop_proj,
-                # ),dim=1)
-                #xx_cat = torch.cat((xx_sop_proj,xx_sop_proj),dim=1)
-                xx_final = torch.nn.functional.normalize(xx_cat,p=2, dim=-1)
-                #import pdb; pdb.set_trace()
-            else :
-                xx_sop_proj = xx_sop[:,:126,:].reshape(batch_sz,-1,768)
-                xx_proj_1 = self.lidar_projection2(xx) 
-                xx_proj_2 = xx_proj_1.flatten(2).transpose(1, 2)
-                xx = torch.nn.functional.normalize(
-                    torch.cat((
-                        xx_proj_2,
-                        xx_sop_proj.repeat([1,4,1])
-                    ),dim=1),p=2, dim=-1)
-            """
-
+            input2 = make_sparse_tensor(lidar_pc2, voxel_size).cuda()
+            output_desc2, output_feats2 = model(input2)  # .squeeze()
+            #output_feats2 = output_feats2[0]
+            #global_descriptor2 = output_desc2.cpu().detach().numpy()
+        """
+        
+        ##################################################################################  
+        # load desc
+        ##################################################################################   
+        ret_dict = lidar_values
+        if desc_from_logg == False:
+            nn = lidar_values[input_mod][:,1] # change 'frame_id' to input_mod
+            xx_sop_log3d = self.load_tensor(nn,"logg_desc")
+        else:
+           xx_sop_log3d = output_desc_computed.reshape([1, -1]) 
+            
         #import pdb; pdb.set_trace()
+
+        
+        #xx_final_ori = xx_sop_log3d.unsqueeze(1).repeat(1, 1, 1).to(dtype=torch.float32)
+        xx_final_ori = xx_sop_log3d.unsqueeze(1).to(dtype=torch.float32)
+        del xx_sop_log3d
+        print_module_stats("xx_final_ori",xx_final_ori)
+        if use_batch_norm : 
+            xx_final_ori = self.post_layernorm(xx_final_ori)
+        print_module_stats("xx_final_ori_norm", xx_final_ori)
+
+
+        ##################################################################################  
+        # desc dim 256 to 768
+        ##################################################################################   
+        for ii in range(0,em_len) : # (0, 4)
+            #denominator = np.power(10000, 2*ii/em_len)
+            pii = math.floor(ii/2)
+            if use_positional : 
+                if use_duplicate_vect :
+                     xx_embed = xx_final_ori
+                
+                elif ii % 2 == 0 :
+                    xx_embed = torch.sin(math.pow(2,pii)*xx_final_ori)
+                else :
+                    xx_embed = torch.cos(math.pow(2,pii)*xx_final_ori)
+            else :
+                xx_embed = xx_final_ori
+                
+            if ii % 3 == 0 : # si dernier passage
+                embed_stack = xx_embed
+            else :
+                embed_stack = torch.cat([embed_stack,xx_embed],dim=2)
+
+            if ii % 3 == 2 :
+                if ii == 2 :
+                    xx_final = embed_stack
+                else :
+                    xx_final = torch.cat([xx_final,embed_stack],dim=1)
+                                                  
+        print_module_stats("xx_final_full" + str(ii),xx_final)                                              
+        xx_final = xx_final.to(dtype=torch.float32)
         return (ret_dict,xx_final)
  
     
@@ -1125,8 +1037,6 @@ class GitLidarModel(GitPreTrainedModel):
     """The vision model from CLIP, used in GIT, without any head or projection on top.""",
     GIT_START_DOCSTRING,
 )
-
-
 
 
 @add_start_docstrings(
@@ -1308,7 +1218,7 @@ class GitModel(GitPreTrainedModel):
         # and head_mask is converted to shape [num_hidden_layers x batch x num_heads x seq_length x seq_length]
         head_mask = self.get_head_mask(head_mask, self.config.num_hidden_layers)
         projected_visual_features = None
-
+        
         ret_dict,projected_lidar_features = self.lidar_encoder(points,lidar_values,input_mod) # load
         projected_visual_features=projected_lidar_features # torch.Size([16, 255, 768])
         batch_size = ret_dict['batch_size']
@@ -1609,8 +1519,7 @@ class GitForCausalLM(GitPreTrainedModel):
         Generated caption: ['a woman is sitting at a table and she is talking about the food she is holding.']
         ```
         """
-
-        #import pdb; pdb.set_trace()                
+        
         return_dict = return_dict if return_dict is not None else self.config.use_return_dict
         if labels is not None:
             use_cache = False
@@ -1648,7 +1557,7 @@ class GitForCausalLM(GitPreTrainedModel):
             do_use_contrast_quad = False
 
         #pixel_values = torch.rand(10, 3, 224, 224)
-        
+    
         outputs = self.git(
             input_ids,
             attention_mask=attention_mask,
@@ -1779,25 +1688,8 @@ class GitForCausalLM(GitPreTrainedModel):
                     ) 
                     del shifted_logits_neg_bis
             
-            #print_module_stats("seq_out_ori",sequence_output)
-            #print_module_stats("seq_out_pos",sequence_outputs_pos)
-            #print_module_stats("seq_out_neg",sequence_outputs_pos)        
-            
-
-
-
-
-            #mae_loss = loss_fct
-            # mae_loss = nn.MSELoss()
-            #mae_loss = nn.L1Loss()
-
             if do_use_contrast : 
-                """
-                loss_pos = mae_loss(shifted_logits, shifted_logits_pos)
-                del shifted_logits_pos
-                loss_neg = mae_loss(shifted_logits, shifted_logits_neg)
-                del shifted_logits_neg
-                """
+   
                 metap=0.5
                 loss_tot =  loss_lm   + (loss_lm_pos - loss_lm_neg + metap).clamp(min=0.0)
                 if do_use_contrast_quad :
@@ -1812,29 +1704,8 @@ class GitForCausalLM(GitPreTrainedModel):
             else :
                 loss_tot =  loss_lm
 
-            #max_v = torch.argmax(shifted_logits,dim=2)
-            #import pdb; pdb.set_trace()        
-
-            # if self.acc % 100 == 0  :
-            #     for ii in range(len(max_v)) :
-            #         print(labels[ii].cpu().numpy())
-            #         print(max_v[ii].cpu().numpy())
             self.acc = self.acc +1
-
-
-            
-            #print("loss_tot:" + "{0:0.5f}".format(float(loss_tot)) + " (lm:" + "{0:0.5f}".format(float(loss_lm)) + " itm:" + "{0:0.5f}".format(float(loss_itm)) + "  itc:" + "{0:0.5f}".format(float(loss_itc)) +")")
-
-        # image_feats = F.normalize(self.vision_projection(sequence_output[0]))
-        
-        # image = lidar_values['points']
-        
-        # def concat_all_gather(x):
-        #     return(x)
-        # def all_gather_with_grad(x):
-        #     return(x)
-
-        #import pdb; pdb.set_trace()        
+       
         if not return_dict:
             output = (logits,) + outputs[1:]
             return ((loss,) + output) if loss is not None else output
@@ -1850,9 +1721,6 @@ class GitForCausalLM(GitPreTrainedModel):
     def prepare_inputs_for_generation(
         self, input_ids, past_key_values=None, attention_mask=None, use_cache=None, **kwargs
     ):
-        # cut decoder_input_ids if past_key_values is used
-        #print(attention_mask)
-        #print(input_ids)
 
         if past_key_values is not None:
             input_ids = input_ids[:, -1:]

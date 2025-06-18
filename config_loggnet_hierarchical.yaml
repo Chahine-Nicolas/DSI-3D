@@ -2,7 +2,8 @@ CLASS_NAMES: ['Car', 'Pedestrian', 'Cyclist']
 
 DATA_CONFIG:
     _BASE_CONFIG_: ./kitti_dataset_hierarchical.yaml
-    POINT_CLOUD_RANGE: [0, -39.68, -3, 69.12, 39.68, 1]
+    #POINT_CLOUD_RANGE: [0, -39.68, -3, 69.12, 39.68, 1]
+    POINT_CLOUD_RANGE: [-1000, -1000, -1000, 1000, 1000, 1000]
 
     DATA_AUGMENTOR:
         DISABLE_AUG_LIST: ['placeholder']
@@ -21,7 +22,7 @@ DATA_CONFIG:
 
     DATA_PROCESSOR:
       - NAME: mask_points_and_boxes_outside_range
-        REMOVE_OUTSIDE_BOXES: True
+        REMOVE_OUTSIDE_BOXES: False
 
       - NAME: shuffle_points
         SHUFFLE_ENABLED: {
