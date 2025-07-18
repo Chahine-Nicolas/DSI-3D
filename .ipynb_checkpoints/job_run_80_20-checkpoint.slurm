@@ -97,7 +97,7 @@ fi
 case ${MODEL_NAME} in
     "git")
 	BATCH_SIZE_TRAIN=256
-	BATCH_SIZE_EVAL=64
+	BATCH_SIZE_EVAL=32
 	
 	ADAM_EPSILON=1e-05
 	ADAM_BETA1=0.90
@@ -129,6 +129,7 @@ export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 # 	   --cfg_file ./config_loggnet_cross_eval.yaml \
 # 	   --workers 1
 # fi
+
 
 
 #python  -m pdb  main.py \

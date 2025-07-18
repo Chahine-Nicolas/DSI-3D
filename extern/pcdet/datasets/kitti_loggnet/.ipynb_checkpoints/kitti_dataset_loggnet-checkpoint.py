@@ -430,7 +430,7 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
         
         desc_from_logg = False 
         desc_from_logg = True
-        
+        print("inside")
         if desc_from_logg == True:
             from .logg3d_net_desc import get_logg3d_net_desc
             eval_seq = '06'

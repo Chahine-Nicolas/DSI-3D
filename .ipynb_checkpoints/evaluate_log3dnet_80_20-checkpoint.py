@@ -270,7 +270,10 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         save_name = 'output_00.txt'
         open(save_name, 'w').close()
     ######################################################################################
-        
+
+    #all_input_data = [data_collator([eval_subset[i]]) for i in range(num_queries)]
+
+    
     for query_idx in range(num_queries):
         #for query_idx, input_data  in enumerate(eval_loader):
 
@@ -293,10 +296,11 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         beam_ids = None
         if eval_set.labeltype != 'log3dnet' :
             prep_timer.tic()   
-            input_data= data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1)))  
+            input_data = data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1))) 
+            #input_data = all_input_data[query_idx]
             prep_timer.toc()
             #input_data = input_data_old 
-            
+            import pdb; pdb.set_trace()
   
             # Efficient model inference
             desc_timer.tic()
