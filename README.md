@@ -11,3 +11,9 @@ This repository contains the code used for Orasis 2025 and papers
 conda create -n DSI_3D python=3.7
 conda activate gd-DSI_3D
 
+# Dataset indexing
+
+
+# Training
+
+# Inference
