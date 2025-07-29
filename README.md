@@ -28,6 +28,11 @@ conda env create --name DSI_3D --file=environments.yml
 python compute_hierarchical_index.py
 ```
 
+```highlight
+python compute_hilbert_index.py
+```
+
+
 # Checkpoint
 coming soon
 
