@@ -3,8 +3,11 @@
 This repository contains the code used for the CBMI 2025 paper "DSI-3D: Differentiable Search Index
 for point clouds retrieval"
 
-We adapted the Differentiable Search Index to accelerate the retrieval phase of of 3D point cloud using GIT 
-![GIT]([https://arxiv.org/pdf/2205.14100)   architecture.
+We extend the Differentiable Search Index (DSI) to accelerate the retrieval phase of of 3D point clouds using the
+[GIT](https://arxiv.org/abs/2205.14100.pdf) architecture.
+
+The model is trained to associate point cloud representations, using [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main), with corresponding labels. 
+During inference, it generates labels auto-regressively via beam search.
 
 ![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
 
