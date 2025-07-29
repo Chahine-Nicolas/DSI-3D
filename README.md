@@ -24,6 +24,9 @@ conda env create --name DSI_3D --file=environments.yml
 # Dataset indexing
 
 
+```highlight
+python compute_hierarchical_index.py
+```
 
 # Checkpoint
 coming soon
