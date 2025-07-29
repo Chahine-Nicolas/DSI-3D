@@ -1,6 +1,10 @@
 # DSI-3D 
 
-This repository contains the code used for Orasis 2025 and papers
+This repository contains the code used for the CBMI 2025 paper "DSI-3D: Differentiable Search Index
+for point clouds retrieval"
+
+We adapted the Differentiable Search Index to accelerate the retrieval phase of of 3D point cloud using GIT 
+![GIT]([https://arxiv.org/pdf/2205.14100)   architecture.
 
 ![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
 
