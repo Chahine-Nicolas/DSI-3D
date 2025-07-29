@@ -19,6 +19,12 @@ coming soon
 
 # Training
 
+You may need to change LABEL_MODE to choose an indexation strategy.
+
+```highlight
+source train.sh
+```
+
 # Inference
 
 For Naively Structured String identifiers
