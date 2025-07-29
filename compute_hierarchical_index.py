@@ -66,8 +66,8 @@ def compute_hierarchical_clustering(eval_subset,eval_set,data_collator,tokenizer
     log3dnet_dir=os.getenv('LOG3DNET_DIR')
     ## ==== Kitti =====
     print("kitti dataset")
-    #kitti_dir = os.getenv('WORKSF') + '/datas/datasets/'
-    kitti_dir = os.getenv('WORK') + '/datas/datasets/'
+    kitti_dir = os.getenv('WORKSF') + '/datas/datasets/'
+   
     eval_seq = '%02d' % eval_seq
     sequence_path = kitti_dir + 'sequences/' + eval_seq + '/'
     num_queries =  len(eval_subset)
