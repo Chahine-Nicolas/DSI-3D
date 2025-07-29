@@ -16,10 +16,14 @@ During inference, it generates labels auto-regressively via beam search.
 [2025-0X] code release
 
 # Installation
-conda create -n DSI_3D python=3.7
-conda activate gd-DSI_3D
+
+```highlight
+conda env create --name DSI_3D --file=environments.yml
+```
 
 # Dataset indexing
+
+
 
 # Checkpoint
 coming soon
