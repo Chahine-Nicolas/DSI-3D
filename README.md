@@ -2,7 +2,7 @@
 
 This repository contains the code used for Orasis 2025 and papers
 
-![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/dessin-2.pdf?raw=true)
+![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
 
 # NEWS
 
