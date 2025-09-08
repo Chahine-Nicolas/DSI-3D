@@ -21,6 +21,16 @@ During inference, it generates labels auto-regressively via beam search.
 conda env create --name DSI_3D --file=environments.yml
 ```
 
+# Installation of LoGG3D-Net
+
+DSI-3D use [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) so we also need to reproduce their environment.
+Our implementation was developed and tested on the Jean Zay HPC cluster.
+Since installing torchsparse-1.4.0 can be challenging with admin rights, we relied on an existing Jean Zay module (pytorch-gpu/py3/1.10.1) to pre-compute the LoGG3D-Net features. 
+
+```highlight
+module load pytorch-gpu/py3/1.10.1
+```
+
 # Dataset indexing
 
 
