@@ -861,7 +861,7 @@ class GitLidarModel(GitPreTrainedModel):
         # load desc from loggnet
         ##################################################################################    
         desc_from_logg = False 
-        desc_from_logg = True
+        #desc_from_logg = True
         
         if desc_from_logg == True:
 
@@ -985,7 +985,7 @@ class GitLidarModel(GitPreTrainedModel):
         if desc_from_logg == False:
             nn = lidar_values[input_mod][:,1] # change 'frame_id' to input_mod
             xx_sop_log3d = self.load_tensor(nn,"logg_desc")
-            import pdb; pdb.set_trace()
+            #import pdb; pdb.set_trace()
         else:
            xx_sop_log3d = output_desc_computed.reshape([1, -1]) 
             

@@ -220,7 +220,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         for ii in db_seen_ids : LIK.append(tokenizer(eval_set.label2hilbert(ii),padding="max_length",max_length=ID_MAX_LENGTH).input_ids)
     else :
         for ii in db_seen_ids : LIK.append(tokenizer(ii,padding="max_length",max_length=ID_MAX_LENGTH).input_ids)
-    #import pdb; pdb.set_trace()        
+         
     
     def restrict_decode_vocab(batch_idx, prefix_beam):
         TOK_ID_OK = []
@@ -300,7 +300,6 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             #input_data = all_input_data[query_idx]
             prep_timer.toc()
             #input_data = input_data_old 
-            import pdb; pdb.set_trace()
   
             # Efficient model inference
             desc_timer.tic()
@@ -789,9 +788,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             else:
                 print("No data available")
 
-    
-    import pdb; pdb.set_trace() 
-            
+                
     """
     # p_dist
     dict_to = list_true_positive
