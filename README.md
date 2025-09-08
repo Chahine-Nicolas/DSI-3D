@@ -31,6 +31,15 @@ Since installing torchsparse-1.4.0 can be challenging with admin rights, we reli
 module load pytorch-gpu/py3/1.10.1
 ```
 
+# Dataset
+
+DSI-3D follows the same dataset setup as LoGG3D-Net
+Download the [KITTI Odometry datasets.](https://www.cvlibs.net/datasets/kitti/eval_odometry.php)
+Update the dataset paths in LoGG3D-Net/config/eval_config.py.
+
+After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and place each one inside its corresponding sequence folder (00/, 02/, …).
+
+
 # Dataset indexing
 
 
