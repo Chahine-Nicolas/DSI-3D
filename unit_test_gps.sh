@@ -1,5 +1,5 @@
 ## Change
-export LOG3DNET_DIR='/lustre/fswork/projects/rech/dki/ujo91el/code/these_place_reco/LoGG3D-Net/'
+export LOG3DNET_DIR='/LoGG3D-Net/'
 
 ## Model
 #MODEL_NAME=blip2
