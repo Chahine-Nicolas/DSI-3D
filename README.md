@@ -31,6 +31,64 @@ Since installing torchsparse-1.4.0 can be challenging with admin rights, we reli
 module load pytorch-gpu/py3/1.10.1
 ```
 
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir **kitti_dir_path** \
+       --kitti_eval_seq 0 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
+       --skip_time 30 
+```
+
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/' \
+       --kitti_eval_seq 5 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_06-11-58_3n24h_Kitti_v10_q29_10s5_262449.pth' \
+       --skip_time 30      
+```
+
+
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/' \
+       --kitti_eval_seq 6 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth' \
+       --skip_time 30        
+```
+
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/' \
+       --kitti_eval_seq 7 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_08-34-46_3n24h_Kitti_v10_q29_10s7_262451.pth' \
+       --skip_time 30    
+```
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/' \
+       --kitti_eval_seq 8 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_20-28-22_3n24h_Kitti_v10_q29_10s8_263169.pth' \
+       --skip_time 30
+```
+
+For the sequence 22, we use the checkpoint 2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth as:
+```highlight
+python evaluation/evaluate.py \
+       --eval_dataset 'KittiDataset' \
+       --kitti_dir **kitti_dir_path** \
+       --kitti_eval_seq 22 \
+       --checkpoint_name '/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
+       --skip_time 30  
+```
+
+
+
+
 # Dataset
 
 DSI-3D follows the same dataset setup as LoGG3D-Net
