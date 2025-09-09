@@ -1,7 +1,7 @@
 # DSI-3D 
 
 This repository contains the code used for the CBMI 2025 paper "DSI-3D: Differentiable Search Index
-for point clouds retrieval"
+for point clouds retrieval". Our implementation was developed and tested on the Jean Zay HPC cluster.
 
 We extend the Differentiable Search Index (DSI) to accelerate the retrieval phase of of 3D point clouds using the
 [GIT](https://arxiv.org/abs/2205.14100.pdf) architecture.
@@ -24,10 +24,11 @@ conda env create --name DSI_3D --file=environments.yml
 # Installation of LoGG3D-Net
 
 DSI-3D use [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) so we also need to reproduce their environment.
-Our implementation was developed and tested on the Jean Zay HPC cluster.
 Since installing torchsparse-1.4.0 can be challenging with admin rights, we relied on an existing Jean Zay module (pytorch-gpu/py3/1.10.1) to pre-compute the LoGG3D-Net features. 
+You will also need to download the pretrained LoGG3D-Net model and place it in the checkpoint/ folder.
 
 ```highlight
+**Load a GPU**
 module load pytorch-gpu/py3/1.10.1
 ```
 To generate and save the descriptors, run the following commands:
@@ -37,7 +38,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 0 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
        --skip_time 30 
 ```
 
@@ -46,7 +47,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 2 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_05-55-20_3n24h_Kitti_v10_q29_10s2_262448.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_05-55-20_3n24h_Kitti_v10_q29_10s2_262448.pth' \
        --skip_time 30   
 ```
 
@@ -56,7 +57,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 5 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_06-11-58_3n24h_Kitti_v10_q29_10s5_262449.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_06-11-58_3n24h_Kitti_v10_q29_10s5_262449.pth' \
        --skip_time 30      
 ```
 
@@ -66,7 +67,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 6 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth' \
        --skip_time 30        
 ```
 
@@ -75,7 +76,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 7 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_08-34-46_3n24h_Kitti_v10_q29_10s7_262451.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_08-34-46_3n24h_Kitti_v10_q29_10s7_262451.pth' \
        --skip_time 30    
 ```
 ```highlight
@@ -83,7 +84,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 8 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_20-28-22_3n24h_Kitti_v10_q29_10s8_263169.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_20-28-22_3n24h_Kitti_v10_q29_10s8_263169.pth' \
        --skip_time 30
 ```
 
@@ -93,7 +94,7 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 22 \
-       --checkpoint_name '/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
+       --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
        --skip_time 30  
 ```
 
@@ -111,6 +112,12 @@ After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and
 
 # Dataset indexing
 
+You will need to compute the mapping dictionary between point cloud names and their new indexes. This step only needs to be done once.
+```highlight
+**Load a GPU**
+module load anaconda-py3/2023.03
+conda activate DSI_3D
+```
 
 ```highlight
 python compute_hierarchical_index.py
@@ -126,6 +133,12 @@ coming soon
 
 # Training
 
+```highlight
+**Load a GPU**
+module load anaconda-py3/2023.03
+conda activate DSI_3D
+```
+
 You may need to change LABEL_MODE to choose an indexation strategy.
 
 ```highlight
@@ -133,6 +146,12 @@ source train.sh
 ```
 
 # Inference
+
+```highlight
+**Load a GPU**
+module load anaconda-py3/2023.03
+conda activate DSI_3D
+```
 
 For Naively Structured String identifiers
 
