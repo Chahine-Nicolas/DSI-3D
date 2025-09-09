@@ -30,9 +30,10 @@ Since installing torchsparse-1.4.0 can be challenging with admin rights, we reli
 ```highlight
 module load pytorch-gpu/py3/1.10.1
 ```
+To generate and save the descriptors, run the following commands:
 
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 0 \
@@ -41,7 +42,7 @@ python evaluation/evaluate.py \
 ```
 
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 2 \
@@ -51,7 +52,7 @@ python evaluation/evaluate.py \
 
 
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 5 \
@@ -61,7 +62,7 @@ python evaluation/evaluate.py \
 
 
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 6 \
@@ -70,7 +71,7 @@ python evaluation/evaluate.py \
 ```
 
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 7 \
@@ -78,7 +79,7 @@ python evaluation/evaluate.py \
        --skip_time 30    
 ```
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 8 \
@@ -88,7 +89,7 @@ python evaluation/evaluate.py \
 
 For the sequence 22, we use the checkpoint 2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth as:
 ```highlight
-python evaluation/evaluate.py \
+python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 22 \
