@@ -18,8 +18,46 @@ During inference, it generates labels auto-regressively via beam search.
 # Installation
 
 ```highlight
-conda env create --name DSI_3D --file=environments.yml
+module load anaconda-py3/2023.03
+conda create -y -n DSI_3D python=3.10
+conda activate DSI_3D
 ```
+
+```highlight
+conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
+conda install -c anaconda cudatoolkit
+conda install transformers
+export PYTHONUSERBASE=/gpfswork/rech///install/sandbox
+pip install --user bitsandbytes
+pip install --user git+https://github.com/huggingface/accelerate.git
+```
+
+GIT requierements
+```highlight
+pip install -r requirements.txt
+```
+
+```highlight
+pip install --user tensorboardX tensorboard
+pip install --user easydict
+pip install --user nuscenes-devkit spconv-cu111 numba scipy pyyaml easydict fire tqdm shapely matplotlib opencv-python addict pyquaternion awscli open3d pandas future pybind11 tensorboardX tensorboard Cython
+pip install --user pycocotools SharedArray terminaltables 
+pip install --user torchvision
+pip install --user timm
+pip install --user einops
+#pip install --user torch-scatter
+pip install --user torch-scatter==2.1.1 -f https://data.pyg.org/whl/torch-2.0.1+cu118.html
+pip install --user hostlist
+```
+
+# Dataset
+
+DSI-3D follows the same dataset setup as LoGG3D-Net
+Download the [KITTI Odometry datasets.](https://www.cvlibs.net/datasets/kitti/eval_odometry.php)
+Update the dataset paths in LoGG3D-Net/config/eval_config.py.
+
+After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and place each one inside its corresponding sequence folder (00/, 02/, …).
+
 
 # Installation of LoGG3D-Net
 
@@ -97,17 +135,6 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
        --skip_time 30  
 ```
-
-
-
-
-# Dataset
-
-DSI-3D follows the same dataset setup as LoGG3D-Net
-Download the [KITTI Odometry datasets.](https://www.cvlibs.net/datasets/kitti/eval_odometry.php)
-Update the dataset paths in LoGG3D-Net/config/eval_config.py.
-
-After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and place each one inside its corresponding sequence folder (00/, 02/, …).
 
 
 # Dataset indexing
