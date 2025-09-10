@@ -15,7 +15,7 @@ During inference, it generates labels auto-regressively via beam search.
 
 [2025-0X] code release
 
-# Installation
+# Installation of the DSI-3D environment
 
 ```highlight
 module load anaconda-py3/2023.03
@@ -99,7 +99,6 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --skip_time 30      
 ```
 
-
 ```highlight
 python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
@@ -150,13 +149,37 @@ conda activate DSI_3D
 python compute_hierarchical_index.py
 ```
 
+To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence.
+
 ```highlight
-python compute_hilbert_index.py
+python compute_hilbert_index.py --eval_seq 0 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
+```highlight
+python compute_hilbert_index.py --eval_seq 2 --p 17 --save True --data_path **kitti_dir_path**
+```
 
-# Checkpoint
-coming soon
+```highlight
+python compute_hilbert_index.py --eval_seq 5 --p 17 --save True --data_path **kitti_dir_path**
+```
+
+For sequence 06, our pretrained model was trained using a Hilbert curve at iteration 16.
+```highlight
+python compute_hilbert_index.py --eval_seq 6 --p 16 --save True --data_path **kitti_dir_path**
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 7 --p 17 --save True --data_path **kitti_dir_path**
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 8 --p 17 --save True --data_path **kitti_dir_path**
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 22 --p 20 --save True --data_path **kitti_dir_path**
+```
+
 
 # Training
 
@@ -171,8 +194,24 @@ You may need to change LABEL_MODE to choose an indexation strategy.
 ```highlight
 source train.sh
 ```
+# Checkpoint
+coming soon
+
 
 # Inference
+
+To reproduce the results obtained with our pretrained model, simply run the provided .sh scripts.
+
+Pour Laurent
+
+For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
+
+```highlight
+source unit_test_hilbert.sh
+```
+
+
+
 
 ```highlight
 **Load a GPU**
@@ -198,7 +237,7 @@ For Positional Structured identifiers with coordinates interlacing
 source unit_test_gps.sh
 ```
 
-For Positional Structured identifiers with Hilbert curve indexing
+For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
 
 ```highlight
 source unit_test_hilbert.sh
