@@ -202,17 +202,6 @@ coming soon
 
 To reproduce the results obtained with our pretrained model, simply run the provided .sh scripts.
 
-Pour Laurent
-
-For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
-
-```highlight
-source unit_test_hilbert.sh
-```
-
-
-
-
 ```highlight
 **Load a GPU**
 module load anaconda-py3/2023.03
