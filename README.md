@@ -15,7 +15,7 @@ During inference, it generates labels auto-regressively via beam search.
 
 [2025-0X] code release
 
-# Installation
+# Installation of the DSI-3D environment
 
 ```highlight
 module load anaconda-py3/2023.03
@@ -99,7 +99,6 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --skip_time 30      
 ```
 
-
 ```highlight
 python LoGG3D-Net/evaluation/evaluate.py \
        --eval_dataset 'KittiDataset' \
@@ -150,13 +149,14 @@ conda activate DSI_3D
 python compute_hierarchical_index.py
 ```
 
+
+Pour Laurent
+
+To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence. Then, edit the eval_seq file to specify your target sequence, and set p=16 for sequence 6, or p=17 for all other sequences.
+
 ```highlight
 python compute_hilbert_index.py
 ```
-
-
-# Checkpoint
-coming soon
 
 # Training
 
@@ -171,8 +171,24 @@ You may need to change LABEL_MODE to choose an indexation strategy.
 ```highlight
 source train.sh
 ```
+# Checkpoint
+coming soon
+
 
 # Inference
+
+To reproduce the results obtained with our pretrained model, simply run the provided .sh scripts.
+
+Pour Laurent
+
+For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
+
+```highlight
+source unit_test_hilbert.sh
+```
+
+
+
 
 ```highlight
 **Load a GPU**
@@ -198,7 +214,7 @@ For Positional Structured identifiers with coordinates interlacing
 source unit_test_gps.sh
 ```
 
-For Positional Structured identifiers with Hilbert curve indexing
+For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
 
 ```highlight
 source unit_test_hilbert.sh
