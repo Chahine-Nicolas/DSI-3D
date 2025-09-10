@@ -149,14 +149,37 @@ conda activate DSI_3D
 python compute_hierarchical_index.py
 ```
 
-
-Pour Laurent
-
-To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence. Then, edit the eval_seq file to specify your target sequence, and set p=16 for sequence 6, or p=17 for all other sequences.
+To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence.
 
 ```highlight
-python compute_hilbert_index.py
+python compute_hilbert_index.py --eval_seq 0 --p 17 --save True
 ```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 2 --p 17 --save True
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 5 --p 17 --save True
+```
+
+For sequence 06, our pretrained model was trained using a Hilbert curve at iteration 16.
+```highlight
+python compute_hilbert_index.py --eval_seq 6 --p 16 --save True
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 7 --p 17 --save True
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 8 --p 17 --save True
+```
+
+```highlight
+python compute_hilbert_index.py --eval_seq 22 --p 20 --save True
+```
+
 
 # Training
 
