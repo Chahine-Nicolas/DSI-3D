@@ -152,32 +152,32 @@ python compute_hierarchical_index.py
 To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence.
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 0 --p 17 --save True
+python compute_hilbert_index.py --eval_seq 0 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 2 --p 17 --save True
+python compute_hilbert_index.py --eval_seq 2 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 5 --p 17 --save True
+python compute_hilbert_index.py --eval_seq 5 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
 For sequence 06, our pretrained model was trained using a Hilbert curve at iteration 16.
 ```highlight
-python compute_hilbert_index.py --eval_seq 6 --p 16 --save True
+python compute_hilbert_index.py --eval_seq 6 --p 16 --save True --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 7 --p 17 --save True
+python compute_hilbert_index.py --eval_seq 7 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 8 --p 17 --save True
+python compute_hilbert_index.py --eval_seq 8 --p 17 --save True --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python compute_hilbert_index.py --eval_seq 22 --p 20 --save True
+python compute_hilbert_index.py --eval_seq 22 --p 20 --save True --data_path **kitti_dir_path**
 ```
 
 
