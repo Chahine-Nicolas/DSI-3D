@@ -42,7 +42,9 @@ if __name__ == "__main__":
     # Get model
     model = get_pipeline(cfg.eval_pipeline)
 
-    save_path = os.path.join(os.path.dirname(__file__), '../', 'checkpoints')
+    #save_path = os.path.join(os.path.dirname(__file__), '../', 'checkpoints')
+    save_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'checkpoints'))
+
     
     save_path = str(save_path) + cfg.checkpoint_name
     print('Loading checkpoint from: ', save_path)
