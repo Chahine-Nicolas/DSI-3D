@@ -108,16 +108,16 @@ def evaluate_sequence_reg(model, cfg):
         
         ############################################################################################
         #save_tensor
-    
         if cfg.save_global_desc:
             sequence_path_all = sequence_path
             file =  '%06d' % query_idx 
             fname =  file +'.pt'
-            #import pdb; pdb.set_trace()
-            print( sequence_path_all + 'logg_desc' + "/" + fname )
-            torch.save(output_desc, sequence_path_all + 'logg_desc' + "/" + fname)
-            print("save at ", sequence_path_all + 'logg_desc' + "/" + fname)
-        
+
+            save_dir = os.path.join(sequence_path_all, "logg_desc")
+            print( save_dir + "/" + fname )
+            os.makedirs(save_dir, exist_ok=True)
+            torch.save(output_desc, save_dir + "/" + fname)
+            print("save at ", save_dir + "/" + fname)
         ############################################################################################
 
         
