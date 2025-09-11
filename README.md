@@ -77,7 +77,9 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 0 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
-       --skip_time 30 
+       --skip_time 30 \
+       --save_global_desc True
+
 ```
 
 ```highlight
@@ -86,7 +88,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 2 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_05-55-20_3n24h_Kitti_v10_q29_10s2_262448.pth' \
-       --skip_time 30   
+       --skip_time 30 \
+       --save_global_desc True
 ```
 
 
@@ -96,7 +99,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 5 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_06-11-58_3n24h_Kitti_v10_q29_10s5_262449.pth' \
-       --skip_time 30      
+       --skip_time 30 \
+       --save_global_desc True    
 ```
 
 ```highlight
@@ -105,7 +109,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 6 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_06-43-47_3n24h_Kitti_v10_q29_10s6_262450.pth' \
-       --skip_time 30        
+       --skip_time 30 \
+       --save_global_desc True      
 ```
 
 ```highlight
@@ -114,7 +119,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 7 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_08-34-46_3n24h_Kitti_v10_q29_10s7_262451.pth' \
-       --skip_time 30    
+       --skip_time 30 \
+       --save_global_desc True 
 ```
 ```highlight
 python LoGG3D-Net/evaluation/evaluate.py \
@@ -122,7 +128,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 8 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_20-28-22_3n24h_Kitti_v10_q29_10s8_263169.pth' \
-       --skip_time 30
+       --skip_time 30 \
+       --save_global_desc True
 ```
 
 For the sequence 22, we use the checkpoint 2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth as:
@@ -132,7 +139,8 @@ python LoGG3D-Net/evaluation/evaluate.py \
        --kitti_dir **kitti_dir_path** \
        --kitti_eval_seq 22 \
        --checkpoint_name '/checkpoint/kitti_10cm_loo/2021-09-14_03-43-02_3n24h_Kitti_v10_q29_10s0_262447.pth' \
-       --skip_time 30  
+       --skip_time 30 \
+       --save_global_desc True
 ```
 
 
