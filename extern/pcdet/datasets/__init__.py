@@ -5,13 +5,14 @@ from torch.utils.data import DistributedSampler as _DistributedSampler
 from extern.pcdet.utils import common_utils
 
 from .dataset import DatasetTemplate
-from .kitti.kitti_dataset import KittiDataset
+#from .kitti.kitti_dataset import KittiDataset
 from .kitti_loggnet.kitti_dataset_loggnet import KittiDataset_2012
-from .nuscenes.nuscenes_dataset import NuScenesDataset
-from .waymo.waymo_dataset import WaymoDataset
-from .kitti360.kitti360_dataset import Kitti360Dataset
-from .once.once_dataset import ONCEDataset
+#from .nuscenes.nuscenes_dataset import NuScenesDataset
+#from .waymo.waymo_dataset import WaymoDataset
+#from .kitti360.kitti360_dataset import Kitti360Dataset
+#from .once.once_dataset import ONCEDataset
 
+"""
 __all__ = {
     'DatasetTemplate': DatasetTemplate,
     'KittiDataset': KittiDataset,
@@ -21,7 +22,10 @@ __all__ = {
     'ONCEDataset': ONCEDataset,
     'KittiDataset_2012': KittiDataset_2012
 }
-
+"""
+__all__ = {
+    'KittiDataset_2012': KittiDataset_2012
+}
 
 
 class DistributedSampler(_DistributedSampler):

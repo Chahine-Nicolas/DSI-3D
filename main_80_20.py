@@ -24,7 +24,7 @@ import logging
 
 from extern.pcdet.config import cfg, cfg_from_list, cfg_from_yaml_file, log_config_to_file
 from extern.pcdet.datasets import build_dataloader
-from extern.pcdet.models import build_network, model_fn_decorator
+#from extern.pcdet.models import build_network, model_fn_decorator
 from extern.pcdet.utils import common_utils
 from extern.train_utils.optimization import build_optimizer, build_scheduler
 from extern.train_utils.train_utils import train_model
@@ -712,8 +712,7 @@ def main():
         
     ### ========= build Models ===========
     work_path = os.getenv('WORKSF')
-    #/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/transformers
-
+    
     model_paths = {
         "git_base": os.path.join(work_path, "datas/transformers/git-base-coco"),
         "git_large": os.path.join(work_path, "datas/transformers/git-large-coco"),
@@ -722,7 +721,7 @@ def main():
     }
     if args.local_rank == 0 :
         logger.info(f"Model paths: {model_paths}")
-    
+    """
     # Build model
     num_class = len(cfg.CLASS_NAMES)
     if args.local_rank == 0 :
@@ -785,7 +784,7 @@ def main():
     model.train()
     if args.local_rank == 0 :
         logger.info("Model is set to training mode.")
-
+    """
 
     ##############################################################################
     ### === Blig2 / GIT ===
@@ -808,6 +807,8 @@ def main():
         tokenizer = AutoTokenizer.from_pretrained(model_dsi_path)
         
         # Set up lidar model and optionally restore weights
+        model = None
+        
         model_dsi.set_lidar_model(model, SOP(signed_sqrt=False, do_fc=False), do_use_sop, eval_set.root_path)
         if args.git_checkpoint:
             if args.local_rank == 0 :
@@ -1018,7 +1019,7 @@ def main():
     
     ### ====== Freezing Model =========
     ## Freeze network
-    model.freeze(model.model_cfg.FREEZE_LAYERS) # lidar_model
+    #model.freeze(model.model_cfg.FREEZE_LAYERS) # lidar_model
     if True : 
         if args.local_rank == 0 :
             logger.info("============== FULL NETWORK STATE =================")
@@ -1143,7 +1144,6 @@ def main():
         if not os.path.isdir(previous_model_path) :
             if args.local_rank == 0 :
                 print("train from scratch : ",previous_model_path)
-            trainer.train(resume_from_checkpoint="/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/transformers/git-base-coco/")
             trainer.train()
             is_training = True
         else :

@@ -1327,16 +1327,8 @@ class GitForCausalLM(GitPreTrainedModel):
         
 
     def set_lidar_model(self,lm,sop=None,use_sop=False,root_path="/tmp/") :
-
-        self.lidar_encoder.lidar_model = lm
-        self.lidar_encoder.sop = sop
-        self.lidar_encoder.root_path=root_path
-        self.lidar_encoder.use_sop = use_sop
-        self.git.lidar_encoder.lidar_model = lm
-        self.git.lidar_encoder.sop = sop
+        self.lidar_encoder.root_path = root_path      
         self.git.lidar_encoder.root_path=root_path
-        self.git.lidar_encoder.use_sop = use_sop        
-
         
     def set_vocab(self,ww) :
         self.vocab = ww

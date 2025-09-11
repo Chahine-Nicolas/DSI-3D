@@ -5,9 +5,9 @@ import numpy as np
 import torch.utils.data as torch_data
 
 from ..utils import common_utils, file_client
-from .augmentor.data_augmentor import DataAugmentor
-from .processor.data_processor import DataProcessor
-from .processor.point_feature_encoder import PointFeatureEncoder
+#from .augmentor.data_augmentor import DataAugmentor
+#from .processor.data_processor import DataProcessor
+#from .processor.point_feature_encoder import PointFeatureEncoder
 
 
 class DatasetTemplate(torch_data.Dataset):
@@ -23,15 +23,18 @@ class DatasetTemplate(torch_data.Dataset):
         )
         if self.dataset_cfg is None or class_names is None:
             return
-        
+        """
         self.point_cloud_range = np.array(self.dataset_cfg.POINT_CLOUD_RANGE, dtype=np.float32)
         self.point_feature_encoder = PointFeatureEncoder(
             self.dataset_cfg.POINT_FEATURE_ENCODING,
             point_cloud_range=self.point_cloud_range
         )
+       
         self.data_augmentor = DataAugmentor(
             self.root_path, self.dataset_cfg.DATA_AUGMENTOR, self.class_names, logger=self.logger
         ) if self.training else None
+        
+                
         self.data_processor = DataProcessor(
             self.dataset_cfg.DATA_PROCESSOR, point_cloud_range=self.point_cloud_range,
             training=self.training, num_point_features=self.point_feature_encoder.num_point_features
@@ -39,10 +42,11 @@ class DatasetTemplate(torch_data.Dataset):
         
         self.grid_size = self.data_processor.grid_size
         self.voxel_size = self.data_processor.voxel_size
+        """
         self.total_epochs = 0
         self.cur_epoch = 0
         self._merge_all_iters_to_one_epoch = False
-
+        
     def set_epoch(self, epoch):
         self.cur_epoch = epoch
 
@@ -130,11 +134,11 @@ class DatasetTemplate(torch_data.Dataset):
             if data_dict.get('gt_boxes', None) is not None:
                 gt_boxes_mask = np.array([n in self.class_names for n in data_dict['gt_names']], dtype=np.bool_)
                 data_dict_for_augmentation.update({'gt_boxes_mask': gt_boxes_mask})
-
+            """
             data_dict = self.data_augmentor.forward(
                 data_dict=data_dict_for_augmentation
             )
-
+            """
         if data_dict.get('gt_boxes', None) is not None:
             selected = common_utils.keep_arrays_by_name(data_dict['gt_names'], self.class_names)
             data_dict['gt_boxes'] = data_dict['gt_boxes'][selected]
@@ -147,14 +151,14 @@ class DatasetTemplate(torch_data.Dataset):
                 data_dict['gt_boxes2d'] = data_dict['gt_boxes2d'][selected]
                 gt_boxes2d = np.concatenate((data_dict['gt_boxes2d'], gt_classes.reshape(-1, 1).astype(np.float32)), axis=1)
                 data_dict['gt_boxes2d'] = gt_boxes2d
-
+        """
         if data_dict.get('points', None) is not None:
             data_dict = self.point_feature_encoder.forward(data_dict)
         
         data_dict2 = self.data_processor.forward(
             data_dict=data_dict
         )
-
+        """ 
         if self.training and data_dict.get('gt_boxes', None) is not None and len(data_dict['gt_boxes']) == 0:
             new_index = np.random.randint(self.__len__())
             return self.__getitem__(new_index)

@@ -46,6 +46,7 @@ RESUME_CHECKPOINT="False"
 EVAL_CHECKPOINT="./checkpoints/${EXTRA_TAG}/"
 
 CHECKPOINT=./ckpts/gd_mae_finetune_kitti.pth 
+CHECKPOINT= None
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
@@ -95,7 +96,7 @@ esac
 export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 
 
-python main_80_20.py \
+python -m pdb main_80_20.py \
        --launcher none \
        --cfg_file ${CONFIG_NAME} \
        --save_hit_file hit_train.txt \
