@@ -63,7 +63,7 @@ After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and
 
 DSI-3D use [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) so we also need to reproduce their environment.
 Since installing torchsparse-1.4.0 can be challenging with admin rights, we relied on an existing Jean Zay module (pytorch-gpu/py3/1.10.1) to pre-compute the LoGG3D-Net features. 
-You will also need to download the pretrained LoGG3D-Net model and place it in the checkpoint/ folder.
+You will also need to download the pretrained LoGG3D-Net model and place it in the checkpoints/ folder.
 
 ```highlight
 **Load a GPU**
