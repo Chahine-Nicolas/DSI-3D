@@ -83,6 +83,8 @@ data_arg.add_argument('--mulran_data_split', type=dict, default={
     'test': ['KAIST/KAIST_01']
 })
 
+#new
+data_arg.add_argument('--save_global_desc', type=bool, default=False, help="save descriptors")
 
 # Data loader configs
 data_arg.add_argument('--train_phase', type=str, default="train")

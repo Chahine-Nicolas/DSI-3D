@@ -108,15 +108,16 @@ def evaluate_sequence_reg(model, cfg):
         
         ############################################################################################
         #save_tensor
-        save_local_desc = False
-        if save_local_desc:
-            sequence_path_all = '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/' + eval_seq + "/"
+    
+        if cfg.save_global_desc:
+            sequence_path_all = sequence_path
             file =  '%06d' % query_idx 
             fname =  file +'.pt'
             #import pdb; pdb.set_trace()
-            print( sequence_path_all + 'local_desc' + "/" + fname )
-            torch.save(output_feats, sequence_path_all + 'local_desc' + "/" + fname)
-            print("save at ", sequence_path_all + 'local_desc' + "/" + fname)
+            print( sequence_path_all + 'logg_desc' + "/" + fname )
+            torch.save(output_desc, sequence_path_all + 'logg_desc' + "/" + fname)
+            print("save at ", sequence_path_all + 'logg_desc' + "/" + fname)
+        
         ############################################################################################
 
         
