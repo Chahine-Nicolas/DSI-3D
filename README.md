@@ -48,6 +48,7 @@ pip install --user einops
 #pip install --user torch-scatter
 pip install --user torch-scatter==2.1.1 -f https://data.pyg.org/whl/torch-2.0.1+cu118.html
 pip install --user hostlist
+pip install --user hilbertcurve
 ```
 
 # Dataset
