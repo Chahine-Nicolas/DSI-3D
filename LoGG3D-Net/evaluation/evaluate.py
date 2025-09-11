@@ -6,10 +6,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '../'))
 from utils.misc_utils import log_config
 
 
-#from evaluation.eval_sequence import * # from logg3dnet
+from evaluation.eval_sequence import * # from logg3dnet
 
 #from evaluation.eval_sequence_80_20 import *
-from evaluation.eval_sequence_80_20_faiss import *
+#from evaluation.eval_sequence_80_20_faiss import *
 #from eval_sequence_lidar_hd import *
 
 ch = logging.StreamHandler(sys.stdout)
