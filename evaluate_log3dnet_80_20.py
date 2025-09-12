@@ -144,7 +144,6 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     thresholds = np.linspace(
         cd_thresh_min, cd_thresh_max, int(num_thresholds))
 
-    
     num_queries = len(positions_database)
     num_queries = len(eval_subset)
     num_thresholds = len(thresholds)
@@ -158,15 +157,13 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     num_true_negative = np.zeros(num_thresholds)
     num_false_negative = np.zeros(num_thresholds)
     
-    ######################################################################################
+    #################################################
     # classification binaire sans zones grises
-    ######################################################################################
+    #################################################
     num_true_positive_3m = np.zeros(num_thresholds)
     num_false_positive_3m = np.zeros(num_thresholds)
     num_true_negative_3m = np.zeros(num_thresholds)
     num_false_negative_3m = np.zeros(num_thresholds)
-    ######################################################################################
-    ######################################################################################
 
     min_min_dist = 1.0
     max_min_dist = 0.0
@@ -178,7 +175,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     dictio_to_save = []
     print("Start looop")
 
-    prep_timer, desc_timer, ret_timer = Timer(), Timer(), Timer()
+    prep_timer, ret_timer = Timer(), Timer()
 
     chkp = checkpoint_dir +  "/" + checkp_to_eval + "/pytorch_model.bin" # tous
     
@@ -193,12 +190,11 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     for query_idx in range(num_queries):  
         #import pdb; pdb.set_trace()
         query_pose = positions_database[query_idx]
-        seen_poses.append(query_pose) # 0 à 1101
-
+        seen_poses.append(query_pose) 
         if query_idx%5 == 0:
             continue
             
-        seen_ids.append('%06d' % query_idx) # 0 à 880
+        seen_ids.append('%06d' % query_idx) 
         db_seen_ids = np.copy(seen_ids)
     
         if eval_set.labeltype == 'gps' :
@@ -244,16 +240,10 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
                 TOK_ID_OK.append(kk[sz])
         if len(TOK_ID_OK) == 0 :
             TOK_ID_OK.append(102)
-        
-        #pfb2 = tuple(prefix_beam.cpu().numpy())  # Convert tensor to tuple
-        #TOK_ID_OK2 = prefix_dict.get(pfb2, [102])
 
         pfb2 = tuple(prefix_beam.cpu().numpy())  # Convert tensor to tuple
         TOK_ID_OK3 = prefix_dict2.get(pfb2, [102])
 
-        #print("set(TOK_ID_OK2) - set(TOK_ID_OK) " , set(TOK_ID_OK2) - set(TOK_ID_OK)) 
-        #print("set(TOK_ID_OK3) - set(TOK_ID_OK) " , set(TOK_ID_OK3) - set(TOK_ID_OK)) 
-        #print("set(TOK_ID_OK) - set(TOK_ID_OK3) " , set(TOK_ID_OK) - set(TOK_ID_OK3)) 
         if  set(TOK_ID_OK3) != set(TOK_ID_OK):
             import pdb; pdb.set_trace()
         return TOK_ID_OK3
@@ -269,17 +259,8 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         open(save_name, 'w').close()
     ######################################################################################
 
-    #all_input_data = [data_collator([eval_subset[i]]) for i in range(num_queries)]
-
     
     for query_idx in range(num_queries):
-        #for query_idx, input_data  in enumerate(eval_loader):
-
-        #if query_idx > 4541: continue # 00
-        #if query_idx < 9201 or query_idx > 11962: continue # 05
-        #if query_idx < 11962 or query_idx > 13063: continue # 06
-        #if query_idx > 14164 or query_idx < 13063:
-        #if query_idx < 14164 : continue
         if query_idx % 10 != 0:
             continue  
         query_pose = positions_database[query_idx]
@@ -300,7 +281,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             #input_data = input_data_old 
   
             # Efficient model inference
-            desc_timer.tic()
+            ret_timer.tic()
             with torch.no_grad():
                 batch_beams_dict = model.generate(
                         #pixel_values=None,
@@ -321,22 +302,18 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
                         return_dict_in_generate=True,                
                         output_scores = True,
                         )
-            desc_timer.toc()
+            ret_timer.toc()
             ##################################
             
         
             #print("query_idx ", query_idx)
             #continue
-            ret_timer.tic()
             batch_beams = batch_beams_dict['sequences']
             seq_score = batch_beams_dict['sequences_scores'].reshape([-1, num_beams])
             res = _pad_tensors_to_max_len(input_data['labels'], ID_MAX_LENGTH,tokenizer)
             vv = tokenizer.batch_decode(input_data["labels"],skip_special_tokens=True)
             ids = input_data['ids']
             label_ids = tokenizer.batch_decode(batch_beams, skip_special_tokens=True)
-            ret_timer.toc()
-            #print("label_ids ", label_ids)
-            #import pdb; pdb.set_trace()
             p_dist_mean = 0
             p_dist_beam = 0
             beam_ids = None
@@ -381,29 +358,13 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
                 nearest_ids = label_ids
                 nearest_idx = nearest_ids[0]
             
-            # Common processing logic
-            #place_candidate = seen_poses[int(nearest_idx)]
             place_candidates = [seen_poses[int(nearest_id)] for nearest_id in nearest_ids]
             place_candidate = place_candidates[0]
-            
-            #place_candidate array([270.7098619,  27.72478  ,  21.6189174])
-
             
             # Compute distances
             p_dist = np.linalg.norm(query_pose - place_candidate)
             p_dists, hits_clos = compute_distances(query_pose, place_candidates)
             
-            # Compute beam distance where applicable
-            """
-            if eval_set.labeltype in ['gps', 'hilbert']:
-                p_dist_beam = min_distance_beam(query_pose, label_ids, data, seen_poses)
-            elif eval_set.labeltype == 'hierarchical':
-                #p_dist_beam = min(np.linalg.norm(query_pose - seen_poses[int(eval_set.inv_hierarchical_label[kk])]) for kk in label_ids)
-                p_dist_beam = None 
-            else:
-                p_dist_beam = None  # No beam distance for the default case
-            """
-                
             beam_ids = None
             min_dist = -seq_score[0][0].cpu().numpy()
 
@@ -412,12 +373,10 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             feat_dists = cdist(global_descriptor, db_seen_descriptors,
                                metric='cosine').reshape(-1)
             min_dist, nearest_idx = np.min(feat_dists), np.argmin(feat_dists)
-            # ret_timer.toc()
+
             place_candidate = seen_poses[nearest_idx]
             p_dist = np.linalg.norm(query_pose - place_candidate)
       
-        #np.linalg.norm(seen_poses[120] - seen_poses[867])
-        
         is_revisit = is_revisit_list[query_idx]
         is_correct_loc = 0
         is_correct_loc_beam = np.zeros(num_beams)
@@ -426,8 +385,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         # Hitsscores only revisited (OG)
         ######################################################################################
     
-        if is_revisit:
-            #import pdb; pdb.set_trace()        
+        if is_revisit:    
             num_revisits += 1
             if p_dist <= revisit_criteria:
                 num_correct_loc += 1
@@ -532,11 +490,11 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         ######################################################################################
         # classification binaire avec zones grises
         # not_revisit_criteria = 20
-        #num_true_positive, num_false_positive, num_true_negative, num_false_negative = Evaluate_top_1_candidate(num_thresholds, thresholds, min_dist, p_dist, revisit_criteria, not_revisit_criteria, is_revisit, num_true_positive, num_false_positive, num_true_negative, num_false_negative)
+
         ######################################################################################
         # classification binaire sans zones grises
         # not_revisit_criteria = revisit_criteria = 3
-        #num_true_positive_3m, num_false_positive_3m, num_true_negative_3m, num_false_negative_3m = Evaluate_top_1_candidate(num_thresholds, thresholds, min_dist, p_dist, revisit_criteria, revisit_criteria, is_revisit, num_true_positive_3m, num_false_positive_3m, num_true_negative_3m, num_false_negative_3m)
+
     
     
         # Evaluate top-1 candidate.
@@ -607,7 +565,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         return F1max, best_metrics, Precisions, Recalls
     
     
-    def log_evaluation_results(label, num_revisits, num_correct_loc, len_eval, num_correct_loc_all, hit_at_10, min_min_dist, max_min_dist, F1max, best_metrics, prep_timer, desc_timer, ret_timer):
+    def log_evaluation_results(label, num_revisits, num_correct_loc, len_eval, num_correct_loc_all, hit_at_10, min_min_dist, max_min_dist, F1max, best_metrics, prep_timer, ret_timer):
         """Logs evaluation results in a structured format."""
         logging.info(f'{label}')
         logging.info(f'num_revisits: {num_revisits}')
@@ -627,8 +585,8 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         logging.info(f'F1max: {F1max:.4f}')
     
         logging.info('Average times per scan:')
-        logging.info(f"--- Prep: {prep_timer.avg:.4f}s Desc: {desc_timer.avg:.4f}s Ret: {ret_timer.avg:.4f}s ---")
-        logging.info(f'Average total time per scan: --- {prep_timer.avg + desc_timer.avg + ret_timer.avg:.4f}s ---')
+        logging.info(f"--- Prep: {prep_timer.avg:.4f}s  Ret: {ret_timer.avg:.4f}s ---")
+        logging.info(f'Average total time per scan: --- {prep_timer.avg + ret_timer.avg:.4f}s ---')
         return
     
     if not save_descriptors:
@@ -639,7 +597,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         log_evaluation_results(
             "Standard Classification", num_revisits, num_correct_loc, len_eval, 
             num_correct_loc_all, hit_at_10, min_min_dist, max_min_dist, 
-            F1max, best_metrics, prep_timer, desc_timer, ret_timer)
+            F1max, best_metrics, prep_timer, ret_timer)
     
         # Evaluate stricter classification
         F1max, best_metrics, Precisions, Recalls = evaluate_classification(
@@ -648,7 +606,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         log_evaluation_results(
             "More Strict Classification", num_revisits, num_correct_loc, len_eval, 
             num_correct_loc_all, hit_at_10, min_min_dist, max_min_dist, 
-            F1max, best_metrics, prep_timer, desc_timer, ret_timer)
+            F1max, best_metrics, prep_timer, ret_timer)
     
 
 

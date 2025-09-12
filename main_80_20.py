@@ -11,7 +11,7 @@ from dataclasses import replace
 import time
 # 
 import torch.distributed as dist
-from torch.nn.parallel import DistributedDataParallel as DDP
+#from torch.nn.parallel import DistributedDataParallel as DDP
 
 import hostlist
 
@@ -24,10 +24,9 @@ import logging
 
 from extern.pcdet.config import cfg, cfg_from_list, cfg_from_yaml_file, log_config_to_file
 from extern.pcdet.datasets import build_dataloader
-#from extern.pcdet.models import build_network, model_fn_decorator
 from extern.pcdet.utils import common_utils
-from extern.train_utils.optimization import build_optimizer, build_scheduler
-from extern.train_utils.train_utils import train_model
+#from extern.train_utils.optimization import build_optimizer, build_scheduler
+#from extern.train_utils.train_utils import train_model
 import numpy as np
 
 ## Blip2
@@ -47,20 +46,19 @@ from transformers import PreTrainedTokenizer, DataCollatorWithPadding,Pretrained
 from typing import Dict, List, Tuple, Optional, Any, Union
 from transformers import   MT5ForConditionalGeneration
 from extern.git.modeling_git import GitModel,GitForCausalLM
-##
+
 from evaluate_log3dnet_80_20 import eval_log3dnet
 #from evaluate_overfit import eval_overfit
-from compute_hierarchical_index import compute_hierarchical_clustering
+#from compute_hierarchical_index import compute_hierarchical_clustering
 
 import json
 from tqdm import tqdm
 import matplotlib.pyplot as plt
-
 from transformers import TrainerCallback
 
 ##################################
 # read pos
-# #################################
+##################################
 from module_loader_kitti_pose import * # add for more metrics
 import math
 import gc
@@ -192,14 +190,11 @@ def parse_config():
     parser.add_argument('--do_preprocess', type=str, default="False", help='')
     parser.add_argument('--do_dump_dict_gt', type=str, default="False", help='')
     
-    
     parser.add_argument('--adam_epsilon', type=float, default=1e-05, required=False, help='adam_epsilon')
     parser.add_argument('--dataset_train_len', type=int, default=64, required=False, help='adam_epsilon')
     parser.add_argument('--dataset_eval_len', type=int, default=16, required=False, help='adam_epsilon')
     parser.add_argument('--learning_rate', type=float, default=1e-07, required=False, help='adam_epsilon')
-
     parser.add_argument('--local-rank', type=int, default=0, help='local rank for distributed training')
-
     parser.add_argument('--dispatch_batches', type=bool, default=True, required=False, help='')
     
     parser.add_argument('--reset_model', type=bool, default=False, required=False, help='')
@@ -234,14 +229,11 @@ def parse_config():
     parser.add_argument('--output_dir', type=str, default=None, help='output_dir')
     parser.add_argument('--log3dnet_dir', type=str, default=None, help='log3dnet')
 
+    # added
     parser.add_argument('--save_hit_file',  type=str, default='hit.txt', help='file with hit score')
-
     parser.add_argument('--id_max_length', type=int, default=10, required=False, help='adam_epsilon')
-
     parser.add_argument('--eval_chkt', type=str, default="checkpoint-100", required=False, help='checkpoint to be evaluated')
-
     parser.add_argument('--lr_scheduler_type', type=str, default="linear", required=False, help='LR scheduler type')
-
     parser.add_argument('--num_cycles', type=int, default=1, required=False, help='restart cycles')
     
     args = parser.parse_args()
@@ -260,7 +252,6 @@ def parse_config():
 # Optimisé make_compute_metrics
 ##############################################################################
 def make_compute_metrics(tokenizer, logger, rank, positions_database, label_mapping, save_file_name):
-#def make_compute_metrics(tokenizer, logger, rank, train_set, sequence_path, d=None):
     def compute_metrics(eval_preds):
         hit_at_1, hit_at_10 = 0, 0
         for beams, label in zip(eval_preds.predictions, eval_preds.label_ids):
@@ -283,20 +274,13 @@ def make_compute_metrics(tokenizer, logger, rank, positions_database, label_mapp
                 if hits_clos[0] == 0:
                     hit_at_1 += 1
 
-        #hit_at_1_tensor = torch.tensor(hit_at_1, device="cuda")
-        #hit_at_10_tensor = torch.tensor(hit_at_10, device="cuda")
-        #dist.all_reduce(hit_at_1_tensor, op=dist.ReduceOp.SUM)
-        #dist.all_reduce(hit_at_10_tensor, op=dist.ReduceOp.SUM)
 
         total_predictions = len(eval_preds.predictions)
 
         #######################################################################
-        # save metrics
-        #######################################################################
+        # save validation metrics
         with open(save_file_name, 'a') as f:
             f.write(str(hit_at_1 / total_predictions ) + " " + str(hit_at_10 / total_predictions ) + "\n")
-        #f.close()
-        #######################################################################
         #######################################################################
         
         return {
@@ -305,9 +289,6 @@ def make_compute_metrics(tokenizer, logger, rank, positions_database, label_mapp
         }
     
     return compute_metrics
-
-##############################################################################
-##############################################################################
 
 ##############################################################################
 # Optimisé DSITrainer
@@ -339,9 +320,7 @@ class DSITrainer(Trainer):
             ignore_keys: Optional[List[str]] = None,
     ) -> Tuple[Optional[torch.Tensor], Optional[torch.Tensor], Optional[torch.Tensor]]:
         
-        
         model.eval()
-        #model.half()
         
         vv = self.tokenizer.batch_decode(inputs["labels"],skip_special_tokens=True)
         self.ll1 = []
@@ -375,8 +354,6 @@ class DSITrainer(Trainer):
             # Extract generated sequences and scores
             batch_beams = batch_beams_dict['sequences']
             seq_score = batch_beams_dict['sequences_scores'].reshape(batch_size, nb_beam)
-            #scores = batch_beams_dict['scores']
-            
 
             # Pad sequences to the maximum length
             batch_beams = self._pad_tensors_to_max_len(batch_beams, self.id_max_length, self.tokenizer)
@@ -408,10 +385,9 @@ class DSITrainer(Trainer):
         )
         padded_tensor[:, :tensor.size(1)] = tensor
         return padded_tensor
-##############################################################################
-##############################################################################
 
 @dataclass
+
 ##############################################################################
 # Optimisé IndexingCollator
 ##############################################################################
@@ -558,10 +534,6 @@ def Print_active_layers_git(args, logger, model_dsi, model_name):
 
 
 
-
-
-
-
 def main():
     ### ===== START ===========
     # parametres
@@ -590,7 +562,7 @@ def main():
     ##########################################################################################
     save_file_name = args.save_hit_file # new for naming file hit score
     with open(save_file_name, 'w') as f:
-        print(' pour créer / vider le txt')
+        print('create and reset the txt output file ', save_file_name)
     f.close()
     ##########################################################################################
 
@@ -608,15 +580,11 @@ def main():
     print("do_dump_dict_gt: "  + str(do_dump_dict_gt))
     print("============================================")
 
-
-    
     ### ==== ARGUMENT PARSER  =====
     ## T5 Args parser 
     parser = HfArgumentParser((TrainingArguments,))
-
-    #import pdb; pdb.set_trace()    
+  
     ## GD-MAE parser
-    #training_args.train_batch_size = batch_size
     if args.launcher == 'none':
         dist_train = False
         total_gpus = 1
@@ -633,9 +601,7 @@ def main():
     
     print("training_args.lr_scheduler_type ", training_args.lr_scheduler_type)
     print("training_args.warmup_ratio:", training_args.warmup_ratio)
-    
-    #import pdb; pdb.set_trace()
-    
+
     batch_size = training_args.per_device_train_batch_size
     ori_train_batch_size  = training_args.per_device_train_batch_size
     ori_eval_batch_size  = training_args.per_device_eval_batch_size
@@ -721,70 +687,7 @@ def main():
     }
     if args.local_rank == 0 :
         logger.info(f"Model paths: {model_paths}")
-    """
-    # Build model
-    num_class = len(cfg.CLASS_NAMES)
-    if args.local_rank == 0 :
-        logger.info(f"Building model with {num_class} classes.")
-    model = build_network(model_cfg=cfg.MODEL, num_class=num_class, dataset=eval_set, logger=logger)
 
-    # Apply SyncBatchNorm if required
-    if args.sync_bn:
-        logger.info("Converting to SyncBatchNorm...")
-        model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
-    
-    # Move model to device
-    model = model.to(device)
-    if args.local_rank == 0 :
-        logger.info(f"Model moved to {device}.")
-
-    # Initialize optimizer
-    if args.local_rank == 0 :
-        logger.info("Building optimizer...")
-    optimizer = build_optimizer(model, cfg.OPTIMIZATION)
-
-
-    #import pdb; pdb.set_trace()
-    #from accelerate import Accelerator
-    #accelerator = Accelerator()
-    #train_dl, eval_dl, model, optimizer = accelerator.prepare(train_loader, eval_loader, model, optimizer)
-    #train_dl, eval_dl, model, optimizer = accelerator.prepare(train_set, eval_set, model, optimizer)
-    #import pdb; pdb.set_trace()
-
-    
-    # Load checkpoints
-    start_epoch = 0
-    it = 0
-    last_epoch = -1
-    if args.pretrained_model:
-        if args.local_rank == 0 :
-            logger.info(f"Loading pretrained model from {args.pretrained_model}...")
-        model.load_params_from_file(filename=args.pretrained_model, to_cpu=dist_train, logger=logger)
-    elif args.ckpt:
-        if args.local_rank == 0 :
-            logger.info(f"Loading model and optimizer state from {args.ckpt}...")
-        it, start_epoch = model.load_params_with_optimizer(
-            args.ckpt, to_cpu=dist_train, optimizer=optimizer, logger=logger
-        )
-        last_epoch = start_epoch + 1
-    else:
-        # Load the most recent checkpoint in the directory if available
-        ckpt_list = glob.glob(str(ckpt_dir / '*checkpoint_epoch_*.pth'))
-        if ckpt_list:
-            ckpt_list.sort(key=os.path.getmtime)
-            latest_ckpt = ckpt_list[-1]
-            if args.local_rank == 0 :
-                logger.info(f"Resuming from the latest checkpoint: {latest_ckpt}")
-            it, start_epoch = model.load_params_with_optimizer(
-                latest_ckpt, to_cpu=dist_train, optimizer=optimizer, logger=logger
-            )
-            last_epoch = start_epoch + 1
-
-    # Set model to training mode
-    model.train()
-    if args.local_rank == 0 :
-        logger.info("Model is set to training mode.")
-    """
 
     ##############################################################################
     ### === Blig2 / GIT ===
@@ -796,7 +699,6 @@ def main():
     tokenizer = None
     
     if model_name == "git" or args.git_checkpoint is not None:
-        #model_dsi_path = args.git_checkpoint if args.git_checkpoint else model_paths["git_base"]
         model_dsi_path = args.git_checkpoint if args.git_checkpoint else model_paths["git_base"]
         if args.local_rank == 0 :
             logger.info(f"Initializing GIT model from {model_dsi_path}...")
@@ -855,7 +757,11 @@ def main():
     
     else:
         logger.error(f"Unsupported model name: {model_name}. Must be 'git' or 'blip2'.")
+
+
+        
     ##############################################################################
+    ### === Vocabulary ===
     ##############################################################################
 
     ### ===== Processor / Tokenizer =====
@@ -909,13 +815,7 @@ def main():
     for ii in n_subset : lid.append(eval_set.get_label(ii))    
     for ii in lid : LIK.append(tokenizer(ii,padding="max_length",max_length=ID_MAX_LENGTH).input_ids)
 
-    #shorter token list
-    #INT_TOKEN_IDS = sorted(set(np.array(LIK).flatten()))
-    #model_dsi.set_vocab(INT_TOKEN_IDS) 
-    
-    #tokenizer.decode(, skip_special_tokens=True)
-    #import pdb; pdb.set_trace()
-    
+    """
     def restrict_decode_vocab(batch_idx, prefix_beam):
         TOK_ID_OK = []
         sz = len(prefix_beam)
@@ -930,9 +830,7 @@ def main():
         if len(TOK_ID_OK) == 0 :
             TOK_ID_OK.append(102)
         return TOK_ID_OK
-    ############################################################
 
-    ############################################################
     
     # Build Prefix Lookup Dictionary for O(1) Lookup
     def build_prefix_dict(LIK, tokenizer):
@@ -949,7 +847,7 @@ def main():
                 else:
                     prefix_dict[prefix] = {next_token}  
         return {k: list(v) for k, v in prefix_dict.items()}  # Convert sets to lists
-
+    """
 
     def build_prefix_dict_filter(LIK):
         prefix_dict = {}
@@ -971,32 +869,17 @@ def main():
 
     
     n_subset = [int(x) for x in range(len(eval_subset))] 
-    #n_subset = n_subset[:4541] #00
-    #n_subset = n_subset[9201:11962] #05
-    #n_subset = n_subset[11962:13063] #06
-    #n_subset = n_subset[13063:14164] #07
-    # n_subset = n_subset[14164:] #08
-
-    
     lid = [eval_set.get_label(ii) for ii in n_subset]
     LIK = [tokenizer(ii, padding="max_length", max_length=ID_MAX_LENGTH).input_ids for ii in lid]
-    #import pdb; pdb.set_trace()
-    #prefix_dict = build_prefix_dict(LIK, tokenizer) # new
     prefix_dict= build_prefix_dict_filter(LIK)
-    #import pdb; pdb.set_trace()
+    
     # Optimized restrict_decode_vocab
     def restrict_decode_vocab_v3(batch_idx, prefix_beam):
         pfb = tuple(prefix_beam.cpu().numpy())  
         return prefix_dict.get(pfb, [102])
     
-    #sprefix_dict = []
-    ############################################################
-    
-    # restrict code version DSI
-    #def restrict_decode_vocab_v2(batch_idx, prefix_beam): #
-        #return INT_TOKEN_IDS
-    
 
+    
     #update object
     train_set.tokenizer = tokenizer
     train_set.image_processor = processor
@@ -1016,41 +899,31 @@ def main():
         batch_size=args.batch_size) # = dict with 
 
 
-    
-    ### ====== Freezing Model =========
-    ## Freeze network
-    #model.freeze(model.model_cfg.FREEZE_LAYERS) # lidar_model
-    if True : 
-        if args.local_rank == 0 :
-            logger.info("============== FULL NETWORK STATE =================")
-        for name, param in model_dsi.named_parameters() : logger.info(name + "\t =>" + str(param.requires_grad)) 
-    if args.local_rank == 0 :
-        logger.info("============== FREE NETWORK STATE =================")
+    logger.info("============== FULL NETWORK STATE =================")
+    for name, param in model_dsi.named_parameters() : logger.info(name + "\t =>" + str(param.requires_grad)) 
+    logger.info("============== FREE NETWORK STATE =================")
 
     ### ====== Print active layers git =========
-    if args.local_rank == 0 :
-        Print_active_layers_git(args, logger, model_dsi, model_name)  
-        logger.info("============== NETWORK STATE =================")
+    Print_active_layers_git(args, logger, model_dsi, model_name)  
+    logger.info("============== NETWORK STATE =================")
 
     ### ====== checkpoint =========
     work_path = os.getenv('WORK')
     CHECK_ROOT= work_path + "/checkpoints/"
     checkpoint_dir = CHECK_ROOT + "/" + model_name + "_" + eval_set.labeltype + "_" + args.extra_tag
-    #checkpoint_dir = CHECK_ROOT + eval_set.labeltype + "_" + args.extra_tag
+
     if not os.path.isdir(checkpoint_dir) :
         Path(checkpoint_dir).mkdir(parents=True, exist_ok=True)
 
-    
+    #############################################################################
+    ### === Training / Evaluation ===
+    ##############################################################################
 
     if do_train:
         
-        
-        is_training = False
-
-        # indices 
         train_indices = []  # Indices for the training set
         val_indices = []    # Indices for the validation set
-        #eval_indices = []   # Indices for the evaluation set
+        
         for query_idx in range(train_len): 
             if query_idx % 5 != 0:  # 80% of the data
                 train_indices.append(query_idx)
@@ -1059,7 +932,6 @@ def main():
             #else:  # Remaining 10% for evaluation
                 #eval_indices.append(query_idx)
 
-        
         # Preload required data for compute metrics only one time 
         def load_json(filepath):
             with open(filepath, "r") as f:
@@ -1072,7 +944,6 @@ def main():
             label_mapping = load_json(sequence_path + f"/{train_set.labeltype}.json")
         positions_database = train_set.positions_database # no need to shift --> use to compute metrics
         
-
         
         train_subset = torch.utils.data.Subset(train_set, train_indices)
         if args.local_rank == 0 :
@@ -1082,31 +953,20 @@ def main():
         if args.local_rank == 0 :
             print("val_indices ", len(val_indices))
         del eval_set, val_indices
-        gc.collect()  # Force garbage collection
-        #eval_subset = torch.utils.data.Subset(eval_set, eval_indices)
+        gc.collect()  
         
-        #print("eval_indices ", len(eval_indices))
         # shuffling
-        #train_set[0]['frame_id'], train_set[1]['frame_id'], train_set[2]['frame_id']
-        #train_subset[0]['frame_id'], train_subset[1]['frame_id'], train_subset[2]['frame_id']
         indices = torch.randperm(len(train_subset))
         train_subset_shuffled = torch.utils.data.Subset(train_subset, indices)
        
-        #shuffled_dataset[0]['frame_id'], shuffled_dataset[1]['frame_id'], shuffled_dataset[2]['frame_id']
         if args.local_rank == 0 :
             print("train_subset_shuffled ", len(train_subset))
             print("train_subset_shuffled ", train_subset_shuffled[0]['frame_id'], train_subset_shuffled[1]['frame_id'], train_subset_shuffled[2]['frame_id'])
             print("val_subset ", len(val_subset))
             print("val_subset ", val_subset[0]['frame_id'], val_subset[1]['frame_id'], val_subset[2]['frame_id'])
-            #print("eval_subset ", len(eval_subset))
-            #print("eval_subset ", eval_subset[0]['frame_id'], eval_subset[1]['frame_id'], eval_subset[2]['frame_id'],)
             
 
-        # resume
-        # cur_model_path = checkpoint_dir + "/all_99"
-        # print("cur_model_path ", cur_model_path)
         previous_model_path = args.resume_from_checkpoint
-        #if os.path.exists(cur_model_path) : 
 
 
         new_train_batch_size = ori_train_batch_size
@@ -1118,8 +978,6 @@ def main():
                                     per_device_train_batch_size=new_train_batch_size,
                                     per_device_eval_batch_size=new_eval_batch_size)
 
-        
-        
         save_file_name = args.save_hit_file # new for naming file hit score
 
         if args.local_rank == 0 :
@@ -1135,24 +993,24 @@ def main():
                 eval_dataset=val_subset,
                 data_collator=data_collator,
                 compute_metrics=make_compute_metrics(tokenizer, logger, args.local_rank, positions_database, label_mapping, save_file_name),
-                restrict_decode_vocab=restrict_decode_vocab,
+                restrict_decode_vocab=restrict_decode_vocab_v3,
                 LIK=LIK,
-                #callbacks=[EarlyStoppingCallback(metric_name="eval_Hits@1", threshold=0.99)],  # Custom callback
                 id_max_length=ID_MAX_LENGTH
             ) 
-        
+
+        is_trained = False
         if not os.path.isdir(previous_model_path) :
             if args.local_rank == 0 :
                 print("train from scratch : ",previous_model_path)
             trainer.train()
-            is_training = True
+            is_trained = True
         else :
             if args.local_rank == 0 :
                 print("resume_from_checkpoint : " + previous_model_path)
             trainer.train(resume_from_checkpoint=previous_model_path)
-            is_training = True
+            is_trained = True
         
-        if is_training :
+        if is_trained :
             trainer.save_model(cur_model_path)
             trainer.state.save_to_json(os.path.join(cur_model_path, "trainer_state.json")) 
 
@@ -1162,12 +1020,7 @@ def main():
             print("start eval")
         eval_log3dnet(model_dsi, eval_subset, eval_set, eval_loader, data_collator, tokenizer, cfg, checkpoint_dir, checkp_to_eval, prefix_dict)
 
-    """ # in separate file
-    if do_preprocess  :
-        compute_hierarchical_clustering(train_subset,train_set,data_collator,tokenizer,cfg)        
-        model_dsi.eval()
-        eval_log3dnet(model_dsi, eval_subset, eval_set, data_collator, tokenizer, cfg)
-    """
+
 
 if __name__ == '__main__':
     main()

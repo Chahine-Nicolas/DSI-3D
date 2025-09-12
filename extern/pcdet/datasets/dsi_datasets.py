@@ -17,19 +17,6 @@ class DSIDatasets:
         if self.dataset_cfg is not None :    
             self.labeltype =  self.dataset_cfg['LABEL_TYPE']
 
-
-
-        # eval_seq = 0
-        # kitti_dir = "/gpfswork/rech/xhk/ufm44cu/datas/datasets/"
-        # eval_seq = '%02d' % eval_seq
-        # sequence_path = kitti_dir + 'sequences/' + eval_seq + '/'
-        # _, positions_database = load_poses_from_txt(sequence_path + 'poses.txt')
-
-
-
-        # self.positions_database = positions_database
-        # min_bbox = np.min(self.positions_database,0) 
-        # self.positions_database = self.positions_database - min_bbox
         self.gpsround = 100
     """
     def load_gt_infos(self,root_path) :
@@ -54,7 +41,6 @@ class DSIDatasets:
             return label_id       
 
 
-    
     def label2gps(self,label_id) :
         label_id_gps = self.positions_database[int(label_id)]
         xx = round(label_id_gps[0]*self.gpsround)
@@ -71,7 +57,7 @@ class DSIDatasets:
         xx = round(label_id_gps[0]*self.gpsround)
         yy = round(label_id_gps[1]*self.gpsround)
     
-        p = 17 # Number of iterations (depth of the Hilbert curve) 16 for 06 17 for 00, 02, 05, 06, 07, 08 and 20 for 22
+        p = 17 # Number of iterations (depth of the Hilbert curve) 16 for 06, 17 for 00, 02, 05, 06, 07, 08 and 20 for 22
         n = 2   # Number of dimensions (2D)
         hilbert_curve = HilbertCurve(p, n)
         
@@ -128,11 +114,6 @@ class DSIDatasets:
                 return '%06d' %ii
         else :
             return self.get_gt_label(index) 
-            # if self.labeltype :
-            #     return self.label2gps(self.get_gt_label(index))
-            # else :
-            #     return self.get_gt_label(index) 
-        
         
     def filter_dataset(self,nbe) :
         kitti_infos_filtered_train = []
@@ -166,18 +147,11 @@ class DSIDatasets:
             nbe_fe=math.floor(len(kitti_infos_filtered_eval)/16)*16
             self.kitti_infos = kitti_infos_filtered_eval[:nbe_fe]
 
-        # if False :
-        #     vv=next(iter(self.dsi_infos_gt))
 
     def get_dict_dsi(self, index):            
-            # End load proximus
         input_dict = {}
-
-
         input_dict['id'] = self.get_id(index)
         input_dict['labels'] = self.get_label(index)
-        #input_dict['gps'] = self.label2gps(index) #input_dict['id'])
-        #input_dict['hilbert'] = self.label2hilbert(index)
 
         if self.training or self.do_self_eval  or True  :
             input_dict['gt'] = '-1'

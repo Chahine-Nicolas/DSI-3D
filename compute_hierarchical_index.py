@@ -9,6 +9,7 @@ import torch
 import math
 import argparse
 from sklearn.cluster import KMeans
+from module_loader_kitti_pose import load_poses_from_txt
 
 def elementwise_str_concat(prefix_list, suffix_list):
     return [str(prefix) + str(suffix) for prefix, suffix in zip(prefix_list, suffix_list)]
@@ -61,20 +62,25 @@ def generate_semantic_ids(X, c=10):
 
     return J
 
-def compute_hierarchical_clustering(eval_seq, num_queries, data_path, save):
+
+
+def compute_hierarchical_clustering(eval_seq, data_path, save):
     log3dnet_dir=os.getenv('LOG3DNET_DIR')
     ## ==== Kitti =====
     print("kitti dataset")
    
     eval_seq = '%02d' % eval_seq
     sequence_path = data_path + 'sequences/' + eval_seq + '/'
-     
+
+    _, pose = load_poses_from_txt(sequence_path + 'poses.txt')
+    num_queries = len(pose)
+    print("len sequence ", num_queries)
+    
     embeddings = []
     for query_idx in range(num_queries):
 
         #ids = input_data['ids'][0]
         padded_string = str(query_idx).zfill(6)
-        print(padded_string)
         #import pdb; pdb.set_trace()                
         log_desc = sequence_path + "/logg_desc/" + padded_string + '.pt'
     
@@ -101,15 +107,11 @@ def compute_hierarchical_clustering(eval_seq, num_queries, data_path, save):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Hierarchical mapping for KITTI poses")
     parser.add_argument("--eval_seq", type=int, required=True, help="Sequence number to evaluate (e.g., 6)")
-    parser.add_argument("--num_queries", type=int, default=4541, help="number of queries")
-    kitti_dir = os.getenv("WORKSF") + "/datas/datasets/"
+    kitti_dir = os.getenv("WORKSF") + "/datas/datasets/"   #'/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/'
     parser.add_argument("--data_path", type=str,  default=kitti_dir, required=True, help="Dataset path")
     parser.add_argument("--save", type=bool, default=False, help="Save result as JSON")
     
     args = parser.parse_args()
-    compute_hierarchical_clustering(args.eval_seq, args.num_queries, args.data_path, args.save) 
-
-# python -m pdb  compute_hierarchical_index.py --eval_seq 0 --num_queries 4541 --data_path '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/'
-
+    compute_hierarchical_clustering(args.eval_seq, args.data_path, args.save) 
 
 
