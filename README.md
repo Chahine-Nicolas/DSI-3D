@@ -162,11 +162,7 @@ You will need to compute the mapping dictionary between point cloud names and th
 module load anaconda-py3/2023.03
 conda activate DSI_3D
 ```
-
-```highlight
-python compute_hierarchical_index.py
-```
-
+## Dataset indexing (Hilbert curve)
 To use the Hilbert curve indexation strategy, you need to save one dictionary per sequence.
 
 ```highlight
@@ -198,8 +194,38 @@ python compute_hilbert_index.py --eval_seq 8 --p 17 --save True --data_path **ki
 python compute_hilbert_index.py --eval_seq 22 --p 20 --save True --data_path **kitti_dir_path**
 ```
 
-You may compute the hierarchical indexes with :
-but i fyou want to evaluate our model trained with the hierarchical, you will have to use the dictionnary [???].
+## Dataset indexing (GPS)
+You can compute the GPS indexes with:
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 0 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 2 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 5 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 6 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 7 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 8 --gpsround 100 --data_path **kitti_dir_path**
+```
+
+```highlight
+python -m pdb compute_hierarchical_index.py --eval_seq 22 --gpsround 100 --data_path **kitti_dir_path**
+```
+## Dataset indexing (hierarchical)
+You can compute the hierarchical indexes with:
+However, if you want to evaluate our model trained with the hierarchical setup, you will need to use our dictionary file (hierarchical.json).
 ```highlight
 python compute_hierarchical_index.py --eval_seq 0 --data_path **kitti_dir_path** --save True
 ```
