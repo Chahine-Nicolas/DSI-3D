@@ -197,31 +197,31 @@ python compute_hilbert_index.py --eval_seq 22 --p 20 --save True --data_path **k
 ## Dataset indexing (GPS)
 You can compute the GPS indexes with:
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 0 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 0 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 2 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 2 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 5 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 5 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 6 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 6 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 7 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 7 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 8 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 8 --gpsround 100 --data_path **kitti_dir_path**
 ```
 
 ```highlight
-python -m pdb compute_hierarchical_index.py --eval_seq 22 --gpsround 100 --data_path **kitti_dir_path**
+python -m pdb compute_gps_index.py --eval_seq 22 --gpsround 100 --data_path **kitti_dir_path**
 ```
 ## Dataset indexing (hierarchical)
 You can compute the hierarchical indexes with:
