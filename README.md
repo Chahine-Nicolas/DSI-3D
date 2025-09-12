@@ -70,6 +70,15 @@ You will also need to download the pretrained LoGG3D-Net model and place it in t
 **Load a GPU**
 module load pytorch-gpu/py3/1.10.1
 ```
+You first need to generate the positive pairs for each point cloud sequence:
+```highlight
+cd LoGG3D-Net
+python  utils/data_utils/kitti_tuple_mining.py
+```
+This will create the files positive_sequence_D-3_T-0.json and positive_sequence_D-20_T-0.json in LoGG3D-Net/config/kitti_tuples/.
+Copy these files into each sequence folder (this step also simplifies the use of sequence 22).
+
+
 To generate and save the descriptors, run the following commands:
 
 ```highlight
