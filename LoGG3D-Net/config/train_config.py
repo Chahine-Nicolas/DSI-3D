@@ -67,7 +67,7 @@ data_arg.add_argument("--gp_rem", type=str2bool,
 data_arg.add_argument("--pnv_preprocessing", type=str2bool,
                       default=False, help="Preprocessing in dataloader for PNV.")
 
-data_arg.add_argument('--kitti_dir', type=str, default='/mnt/088A6CBB8A6CA742/Datasets/Kitti/dataset/',
+data_arg.add_argument('--kitti_dir', type=str, default='/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/',
                       help="Path to the KITTI odometry dataset")
 data_arg.add_argument('--kitti_3m_json', type=str,
                       default='positive_sequence_D-3_T-0.json')

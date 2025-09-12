@@ -120,7 +120,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     revisit_criteria=3
     not_revisit_criteria=20
     skip_time=30
-    revisit_json_file = 'is_revisit_D-{}_T-{}_v2.json'.format(
+    revisit_json_file = 'is_revisit_D-{}_T-{}.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
         int(revisit_criteria), int(skip_time))
     cd_thresh_min=0.001
     cd_thresh_max=5 # au lieu de 1
@@ -138,9 +138,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     revisit_json_dir = os.path.join(os.path.dirname(__file__), '/config/kitti_tuples/')
     revisit_json = json.load(open(log3dnet_dir + revisit_json_dir + revisit_json_file, "r"))
     is_revisit_list = revisit_json[eval_seq]
-
-
-    # import pdb; pdb.set_trace()        
+   
     ## ==== Kitti =====
 
     thresholds = np.linspace(

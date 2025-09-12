@@ -31,10 +31,11 @@ class DSIDatasets:
         # min_bbox = np.min(self.positions_database,0) 
         # self.positions_database = self.positions_database - min_bbox
         self.gpsround = 100
-        
+    """
     def load_gt_infos(self,root_path) :
         self.dsi_infos_gt = json.load(open(root_path / "matching.json", "r"))        
-
+    """
+    
     def get_hierarchical_label(self,label_id) :
         kk = str(int(label_id))
         if kk in self.hierarchical_label :

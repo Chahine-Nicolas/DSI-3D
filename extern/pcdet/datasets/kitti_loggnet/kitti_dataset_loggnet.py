@@ -112,15 +112,17 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
         self.positions_database = self._load_positions()
 
         # Load hierarchical labels
-        self.hierarchical_label, self.inv_hierarchical_label = self._load_json_labels('hierarchical_indexing.json')
+        #self.hierarchical_label, self.inv_hierarchical_label = self._load_json_labels('hierarchical_indexing.json')
 
         # Load GPS labels
-        self.gps_label, self.inv_gps_label = self._load_json_labels('dict_gps_2_label_v2.json')
+        #self.gps_label, self.inv_gps_label = self._load_json_labels('dict_gps_2_label_v2.json')
 
         # Load ground truth info if not self-evaluating
+        """
         if not self.do_self_eval:
             self.load_gt_infos(self.root_path)
-
+        """
+        
     def _load_contrastive_data(self, revisit_criteria = 3, revisit_criteria_extended = 20,  skip_time = 0):
         """
         Loads positive and negative sequences for contrastive learning.
@@ -234,25 +236,7 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
 
         return negatives
 
-    """
-    def get_other_negative(self, drive_id, query_id, sel_positive_ids, sel_negative_ids):
-        # Dissimillar to all pointclouds in triplet tuple.
-        all_ids = range(self.kitti_seq_lens[str(drive_id)])
-        
-        neighbour_ids = sel_positive_ids
-        for neg in sel_negative_ids:
-            neg_postives_files = self.get_positives(drive_id, neg)
-            for pos in neg_postives_files:
-                neighbour_ids.append(pos)
-        possible_negs = list(set(all_ids) - set(neighbour_ids))
-        assert len(possible_negs) > 0, f"No other negatives for drive {drive_id} id {query_id}"
-        
-        possible_negs = [x for x in possible_negs if int(x) % 5 != 0] # to avoid the use of val / eval set
-        
-        other_neg_id = random.sample(possible_negs, 1)
-        #print("inside other nega", len(possible_negs),  query_id)
-        return other_neg_id[0]
-    """
+
     def get_other_negative(self, drive_id, query_id, sel_positive_ids, sel_negative_ids):
         """
         Finds an additional negative sample that is dissimilar to all point clouds in the triplet tuple.
@@ -275,66 +259,12 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
 
         # Randomly select one negative sample
         return random.choice(possible_negs)
-
-
-    
-    ###################################################################################################
     
     def __len__(self):
         if self._merge_all_iters_to_one_epoch:
             return len(self.kitti_infos) * self.total_epochs
         return len(self.kitti_infos)
 
-#####################################################################################
-#####################################################################################
-
-    # generate matching.json --> have to move
-    """
-    def preprocess_json(self) :
-        #revisit
-        revisit_json_file = 'is_revisit_D-{}_T-{}.json'.format(int(self.revisit_criteria), int(self.skip_time))
-
-        revisit_json = json.load(open(self.root_path / revisit_json_file, "r"))
-        is_revisit_list = revisit_json[self.eval_seq_str]
-
-        self.kitti_infos_revisited = []
-        full_dict = {}
-        for i in range (self.num_queries):
-            dictio = {}
-            lidar_path = self.kitti_infos[i]
-            query_str = lidar_path.split('/')[-1][:-4]
-            query_idx = int(query_str)
-            #print(lidar_path," ", query_idx )
-
-            if is_revisit_list[query_idx] == 1.0:
-                #print("revisit ")
-                self.kitti_infos_revisited.append(lidar_path)
-                query_pose = self.positions_database[query_idx]
-                query_time = self.timestamps[query_idx]
-                d = []
-                q = []
-                for comp_idx in range(self.num_queries):
-                    comp_time = self.timestamps[comp_idx]
-
-                    if (abs(query_time - comp_time) - self.skip_time) < 0:
-                            continue
-                    if query_idx != comp_idx:
-                        comp_pose = self.positions_database[comp_idx]
-                        p_dist = np.linalg.norm(query_pose - comp_pose)
-                        d.append(round(p_dist,3))
-                        q.append(round(comp_idx,3))
-
-                d, q = zip(*sorted(zip(d, q)))
-                dictio[query_idx] = [q[:10], d[:10]]
-                full_dict[query_str] = dictio
-                with open(self.root_path / "json" / (str(query_str) + '.json'), 'w', encoding ='utf8') as json_file: 
-                    json.dump(dictio, json_file, allow_nan=False)
-        with open(self.root_path / "matching.json", 'w', encoding ='utf8')  as json_file:                     
-            json.dump(full_dict, json_file, allow_nan=False)                     
-    """
-
-
-    
     def __getitem__(self, index):
         # Handle merging of iterations to one epoch
         if self._merge_all_iters_to_one_epoch:
@@ -408,31 +338,4 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
         data_dict['points'] = input_dict['points']
         data_dict['lidar_values'] = lidar_values  
 
-
-        """
-         def prepare_lidar_values(self, features):
-        lidar_val = {}
-        feature_dict = {k: [x[k] for x in features] for k in features[0].keys()}
-        
-        for key, val in feature_dict.items():
-            if key == 'points':
-                padded_points = [torch.nn.functional.pad(
-                    torch.tensor(coor, dtype=torch.float32),
-                    (0, 0, 1, 0), 
-                    value=i  
-                ) for i, coor in enumerate(val)]
-                lidar_val[key] = torch.cat(padded_points, dim=0)
-            else:
-                lidar_val[key] = np.stack(val, axis=0)  
-
-        return lidar_val
-        """ 
-        
-        desc_from_logg = False 
-        #desc_from_logg = True
-
-        if desc_from_logg == True:
-            from .logg3d_net_desc import get_logg3d_net_desc
-            eval_seq = '06'
-            data_dict = get_logg3d_net_desc(data_dict, eval_seq)
         return data_dict

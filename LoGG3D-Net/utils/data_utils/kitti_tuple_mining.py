@@ -67,6 +67,7 @@ if __name__ == "__main__":
     basedir = cfg.kitti_dir
     sequences = ['00', '01', '02', '03', '04',
                  '05', '06', '07', '08', '09', '10']
+    
     output_dir = os.path.join(os.path.dirname(
         __file__), '../../config/kitti_tuples/')
 

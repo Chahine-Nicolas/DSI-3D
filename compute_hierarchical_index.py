@@ -7,7 +7,7 @@ import logging
 import json
 import torch
 import math
-import numpy as np
+import argparse
 from sklearn.cluster import KMeans
 
 def elementwise_str_concat(prefix_list, suffix_list):
@@ -61,19 +61,17 @@ def generate_semantic_ids(X, c=10):
 
     return J
 
-def compute_hierarchical_clustering(eval_subset,eval_set,data_collator,tokenizer,cfg):
-    eval_seq = 0
+def compute_hierarchical_clustering(eval_seq, num_queries, data_path, save):
     log3dnet_dir=os.getenv('LOG3DNET_DIR')
     ## ==== Kitti =====
     print("kitti dataset")
-    kitti_dir = os.getenv('WORKSF') + '/datas/datasets/'
    
     eval_seq = '%02d' % eval_seq
-    sequence_path = kitti_dir + 'sequences/' + eval_seq + '/'
-    num_queries =  len(eval_subset)
+    sequence_path = data_path + 'sequences/' + eval_seq + '/'
+     
     embeddings = []
     for query_idx in range(num_queries):
-        #input_data = data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1)))
+
         #ids = input_data['ids'][0]
         padded_string = str(query_idx).zfill(6)
         print(padded_string)
@@ -94,7 +92,24 @@ def compute_hierarchical_clustering(eval_subset,eval_set,data_collator,tokenizer
     # # Print the generated identifiers
     for doc_idx, doc_id in docid_map.items():
         print(f"Document {doc_idx}: Identifier {doc_id}")
+
+    if save:
+        with open(json_path, "w") as json_file   :
+            json.dump(docid_map, json_file)  
+        print("docid_map saved at ", json_path)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Hierarchical mapping for KITTI poses")
+    parser.add_argument("--eval_seq", type=int, required=True, help="Sequence number to evaluate (e.g., 6)")
+    parser.add_argument("--num_queries", type=int, default=4541, help="number of queries")
+    kitti_dir = os.getenv("WORKSF") + "/datas/datasets/"
+    parser.add_argument("--data_path", type=str,  default=kitti_dir, required=True, help="Dataset path")
+    parser.add_argument("--save", type=bool, default=False, help="Save result as JSON")
     
-    with open(json_path, "w") as json_file   :
-        json.dump(docid_map, json_file)  
-    print("docid_map saved at ", json_path)
+    args = parser.parse_args()
+    compute_hierarchical_clustering(args.eval_seq, args.num_queries, args.data_path, args.save) 
+
+# python -m pdb  compute_hierarchical_index.py --eval_seq 0 --num_queries 4541 --data_path '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/'
+
+
+
