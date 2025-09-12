@@ -198,6 +198,29 @@ python compute_hilbert_index.py --eval_seq 8 --p 17 --save True --data_path **ki
 python compute_hilbert_index.py --eval_seq 22 --p 20 --save True --data_path **kitti_dir_path**
 ```
 
+You may compute the hierarchical indexes with :
+but i fyou want to evaluate our model trained with the hierarchical, you will have to use the dictionnary [???].
+```highlight
+python compute_hierarchical_index.py --eval_seq 0 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 2 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 5 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 6 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 7 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 8 --data_path **kitti_dir_path** --save True
+```
+```highlight
+python compute_hierarchical_index.py --eval_seq 22 --data_path **kitti_dir_path** --save True
+```
 
 # Training
 
