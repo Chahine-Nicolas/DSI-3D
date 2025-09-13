@@ -211,7 +211,7 @@ def parse_config():
     parser.add_argument('--tcp_port', type=int, default=18888, help='tcp port for distrbuted training')
     parser.add_argument('--sync_bn', action='store_true', default=False, help='whether to use sync bn')
     parser.add_argument('--fix_random_seed', type=int, default=-1, help='seed')    
-    parser.add_argument('--ckpt_save_interval', type=int, default=1, help='number of training epochs')
+    #parser.add_argument('--ckpt_save_interval', type=int, default=1, help='number of training epochs')
     parser.add_argument('--max_ckpt_save_num', type=int, default=30, help='max number of saved checkpoint')
     parser.add_argument('--merge_all_iters_to_one_epoch', action='store_true', default=False, help='')
     parser.add_argument('--set', dest='set_cfgs', default=None, nargs=argparse.REMAINDER,
@@ -529,7 +529,6 @@ def Print_active_layers_git(args, logger, model_dsi, model_name):
                 grad_module_name.append(name)
                 if args.local_rank == 0 :
                      logger.info(name + "\t =>" + str(param.requires_grad))
-    
     return
 
 
@@ -815,40 +814,6 @@ def main():
     for ii in n_subset : lid.append(eval_set.get_label(ii))    
     for ii in lid : LIK.append(tokenizer(ii,padding="max_length",max_length=ID_MAX_LENGTH).input_ids)
 
-    """
-    def restrict_decode_vocab(batch_idx, prefix_beam):
-        TOK_ID_OK = []
-        sz = len(prefix_beam)
-        pfb = prefix_beam.cpu().numpy()
-        #import pdb; pdb.set_trace()
-
-        for tt in LIK :
-            #print("tt[:sz] ",tt[:sz], " pfb.tolist() ", pfb.tolist())
-            if tt[:sz] == pfb.tolist()  :
-                TOK_ID_OK.append(tt[sz])
-        #print("tok:" + str(TOK_ID_OK))
-        if len(TOK_ID_OK) == 0 :
-            TOK_ID_OK.append(102)
-        return TOK_ID_OK
-
-    
-    # Build Prefix Lookup Dictionary for O(1) Lookup
-    def build_prefix_dict(LIK, tokenizer):
-        prefix_dict = {}
-        for seq in LIK: # len trainset
-            #tokenizer.decode(seq, skip_special_tokens=True)
-            #import pdb; pdb.set_trace()
-            for sz in range(len(seq) - 1): # length tokens
-                prefix = tuple(seq[:sz])  
-                next_token = seq[sz]  # The next token
-                
-                if prefix in prefix_dict:
-                    prefix_dict[prefix].add(next_token) 
-                else:
-                    prefix_dict[prefix] = {next_token}  
-        return {k: list(v) for k, v in prefix_dict.items()}  # Convert sets to lists
-    """
-
     def build_prefix_dict_filter(LIK):
         prefix_dict = {}
         skip_eval_set = 0
@@ -871,7 +836,7 @@ def main():
     n_subset = [int(x) for x in range(len(eval_subset))] 
     lid = [eval_set.get_label(ii) for ii in n_subset]
     LIK = [tokenizer(ii, padding="max_length", max_length=ID_MAX_LENGTH).input_ids for ii in lid]
-    prefix_dict= build_prefix_dict_filter(LIK)
+    prefix_dict = build_prefix_dict_filter(LIK)
     
     # Optimized restrict_decode_vocab
     def restrict_decode_vocab_v3(batch_idx, prefix_beam):

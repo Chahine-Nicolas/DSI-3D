@@ -22,10 +22,6 @@ DO_PREPROCESS_ID=False
 
 ## Dataset_len
 DATASET_LEN=-1
-#DATASET_LEN=4512 #-1 #512
-#DATASET_LEN=512
-#DATASET_LEN=256
-
 
 ## Eval
 EVAL_STEP=2
@@ -39,11 +35,7 @@ NUM_TRAIN_EPOCH=10000
 #LABEL_MODE="hilbert"#
 LABEL_MODE="label"
 #LABEL_MODE="hierarchical"
-#LABEL_MODE="mixte"
 
-#EXTRA_TAG="new_v4"
-#EXTRA_TAG="pos1_norm1"
-#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_22_80_20_contrast_quad_hilbert_suite_16600"
 EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quadlabel"
 
 
@@ -55,9 +47,7 @@ EVAL_CHECKPOINT="/lustre/fswork/projects/rech/dki/ujo91el/checkpoints/${EXTRA_TA
 
 eval_chkt="checkpoint-8500"
 
-
-#CHECKPOINT=ckpts/gd_mae_pretrain_kitti.pth
-CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
+#CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
@@ -110,15 +100,6 @@ esac
 
 export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 
-# if [ "${DO_PREPROCESS_ID}" = "True" ]; then
-#     python -m pdb preprocess_datasets.py \
-# 	   --launcher none \
-# 	   --cfg_file ./config_loggnet_cross_eval.yaml \
-# 	   --workers 1
-# fi
-
-
-#python  -m pdb  main.py \
 python -m pdb main_80_20.py \
        --launcher none \
        --cfg_file ${CONFIG_NAME} \
@@ -127,13 +108,10 @@ python -m pdb main_80_20.py \
        --model_name ${MODEL_NAME} \
        --dataset_train_len ${DATASET_LEN} \
        --dataset_eval_len ${DATASET_LEN} \
-       --pretrained_model ${CHECKPOINT} \
-       --max_ckpt_save_num 500 \
        --per_device_train_batch_size ${BATCH_SIZE_TRAIN} \
        --per_device_eval_batch_size ${BATCH_SIZE_EVAL} \
        --save_to_file \
        --remove_unused_columns False \
-       --dataloader_pin_memory False \
        --output_dir ${WORK}/checkpoints/${EXTRA_TAG}  \
        --adam_epsilon=${ADAM_EPSILON} \
        --adam_beta1=${ADAM_BETA1} \
@@ -156,6 +134,7 @@ python -m pdb main_80_20.py \
        --eval_chkt ${eval_chkt}\
        --logging_steps 1 \
        --fix_random_seed 666 \
+
 
         #> out_${MODEL_NAME}.txt 2>&1
 #       --use_sop True \

@@ -104,7 +104,6 @@ python -m pdb main_80_20.py \
        --model_name ${MODEL_NAME} \
        --dataset_train_len ${DATASET_LEN} \
        --dataset_eval_len ${DATASET_LEN} \
-       --pretrained_model ${CHECKPOINT} \
        --max_ckpt_save_num 500 \
        --per_device_train_batch_size ${BATCH_SIZE_TRAIN} \
        --per_device_eval_batch_size ${BATCH_SIZE_EVAL} \

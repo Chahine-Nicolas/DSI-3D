@@ -59,7 +59,7 @@ eval_chkt="checkpoint-9300"
 
 
 #CHECKPOINT=ckpts/gd_mae_pretrain_kitti.pth
-CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
+#CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
@@ -129,13 +129,10 @@ python -m pdb main_80_20.py \
        --model_name ${MODEL_NAME} \
        --dataset_train_len ${DATASET_LEN} \
        --dataset_eval_len ${DATASET_LEN} \
-       --pretrained_model ${CHECKPOINT} \
-       --max_ckpt_save_num 500 \
        --per_device_train_batch_size ${BATCH_SIZE_TRAIN} \
        --per_device_eval_batch_size ${BATCH_SIZE_EVAL} \
        --save_to_file \
        --remove_unused_columns False \
-       --dataloader_pin_memory False \
        --output_dir ${WORK}/checkpoints/${EXTRA_TAG}  \
        --adam_epsilon=${ADAM_EPSILON} \
        --adam_beta1=${ADAM_BETA1} \
@@ -158,6 +155,7 @@ python -m pdb main_80_20.py \
        --eval_chkt ${eval_chkt}\
        --logging_steps 1 \
        --fix_random_seed 666 \
+
 
         #> out_${MODEL_NAME}.txt 2>&1
 #       --use_sop True \

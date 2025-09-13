@@ -128,7 +128,6 @@ export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 # fi
 
 
-#python  -m pdb  main.py \
 python -m pdb main_80_20.py \
        --launcher none \
        --cfg_file ${CONFIG_NAME} \
@@ -137,13 +136,10 @@ python -m pdb main_80_20.py \
        --model_name ${MODEL_NAME} \
        --dataset_train_len ${DATASET_LEN} \
        --dataset_eval_len ${DATASET_LEN} \
-       --pretrained_model ${CHECKPOINT} \
-       --max_ckpt_save_num 500 \
        --per_device_train_batch_size ${BATCH_SIZE_TRAIN} \
        --per_device_eval_batch_size ${BATCH_SIZE_EVAL} \
        --save_to_file \
        --remove_unused_columns False \
-       --dataloader_pin_memory False \
        --output_dir ${WORK}/checkpoints/${EXTRA_TAG}  \
        --adam_epsilon=${ADAM_EPSILON} \
        --adam_beta1=${ADAM_BETA1} \
