@@ -60,6 +60,101 @@ Update the dataset paths in LoGG3D-Net/config/train_config.py and LoGG3D-Net/con
 After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and place each one inside its corresponding sequence folder (00/, 02/, …).
 
 
+## Building the sequence 22
+
+We build a new "KITTI", named 22, while respecting the previous formalism of the kitti format.
+
+Start by creating the repository  
+```highlight
+cd  **kitti_dir_path**
+mkdir 22
+cp -r /00/velodyne /22/velodyne
+```
+
+For the following sequence, we add the cumulative length of the current sequence 22
+```highlight
+shopt -s nullglob
+
+# Loop over all .bin files in 02/velodyne
+for file in 02/velodyne/*.bin; do
+    base_value=$(basename "$file" .bin)    
+    base_value=${base_value#0}             
+    base_value=${base_value:-0}        
+    new_value=$((10#$base_value + 4541)) 
+    new_name=$(printf "%06d.bin" "$new_value")
+    cp "$file" "22/velodyne/$new_name"   
+done
+
+shopt -u nullglob
+```
+
+```highlight
+shopt -s nullglob
+
+for file in 05/velodyne/*.bin; do
+    base_value=$(basename "$file" .bin)    
+    base_value=${base_value#0}             
+    base_value=${base_value:-0}        
+    new_value=$((10#$base_value + 9202)) 
+    new_name=$(printf "%06d.bin" "$new_value")
+    cp "$file" "22/velodyne/$new_name"   
+done
+
+shopt -u nullglob
+```
+```highlight
+shopt -s nullglob
+
+for file in 06/velodyne/*.bin; do
+    base_value=$(basename "$file" .bin)    
+    base_value=${base_value#0}             
+    base_value=${base_value:-0}        
+    new_value=$((10#$base_value + 11963)) 
+    new_name=$(printf "%06d.bin" "$new_value")
+    cp "$file" "22/velodyne/$new_name"   
+done
+
+shopt -u nullglob
+```
+
+```highlight
+shopt -s nullglob
+
+for file in 07/velodyne/*.bin; do
+    base_value=$(basename "$file" .bin)    
+    base_value=${base_value#0}             
+    base_value=${base_value:-0}        
+    new_value=$((10#$base_value + 13064)) 
+    new_name=$(printf "%06d.bin" "$new_value")
+    cp "$file" "22/velodyne/$new_name"   
+done
+
+shopt -u nullglob
+```
+
+```highlight
+shopt -s nullglob
+
+for file in 08/velodyne/*.bin; do
+    base_value=$(basename "$file" .bin)    
+    base_value=${base_value#0}             
+    base_value=${base_value:-0}        
+    new_value=$((10#$base_value + 14165)) 
+    new_name=$(printf "%06d.bin" "$new_value")
+    cp "$file" "22/velodyne/$new_name"   
+done
+
+shopt -u nullglob
+```
+
+You may check that your last bin file is named "018235.bin" 
+and that 
+```highlight
+ls -1 | wc -l
+```
+return 18236
+
+
 # Installation of LoGG3D-Net
 
 DSI-3D use [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) so we also need to reproduce their environment.
