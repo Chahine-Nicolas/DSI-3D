@@ -159,6 +159,10 @@ You need to update the revisit file to add sequence 22
 python updat_revisits.py --save True 
 ```
 
+You need to update the revisit file to add sequence 22
+```highlight
+python save_poses_22.py --save True --data_path **kitti_dir_path**
+```
 
 # Installation of LoGG3D-Net
 
