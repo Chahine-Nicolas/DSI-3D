@@ -68,7 +68,7 @@ Start by creating the repository
 ```highlight
 cd  **kitti_dir_path**
 mkdir 22
-cp -r /00/velodyne /22/velodyne2
+cp -r /00/velodyne /22/velodyne
 ```
 
 For the following sequence, we add the cumulative length of the current sequence 22
