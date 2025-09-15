@@ -47,12 +47,12 @@ def save_poses_22(kitti_dir, save):
         ud_content.append(updated_strings)
     
     if save:
-        with open( kitti_dir + 'sequences/22/poses3.txt', 'w') as f:
+        with open( kitti_dir + 'sequences/22/poses.txt', 'w') as f:
             for seq in range(len(list_seq)):
                 for line in ud_content[seq]:
                     f.write("%s\n" % line)
                     #print(line)
-        print("saved at ", kitti_dir + 'sequences/22/poses3.txt') 
+        print("saved at ", kitti_dir + 'sequences/22/poses.txt') 
 
  
 
