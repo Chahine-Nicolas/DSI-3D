@@ -164,6 +164,7 @@ You need to update the revisit file to add sequence 22
 python save_poses_22.py --save True --data_path **kitti_dir_path**
 ```
 
+
 # Installation of LoGG3D-Net
 
 DSI-3D use [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) so we also need to reproduce their environment.
