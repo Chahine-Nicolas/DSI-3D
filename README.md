@@ -159,7 +159,7 @@ You need to update the revisit file to add sequence 22
 python updat_revisits.py --save True 
 ```
 
-You need to update the revisit file to add sequence 22
+To create the new poses
 ```highlight
 python save_poses_22.py --save True --data_path **kitti_dir_path**
 ```
