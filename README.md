@@ -154,6 +154,11 @@ ls -1 | wc -l
 ```
 return 18236
 
+You need to update the revisit file to add sequence 22
+```highlight
+python updat_revisits.py --save True 
+```
+
 
 # Installation of LoGG3D-Net
 
