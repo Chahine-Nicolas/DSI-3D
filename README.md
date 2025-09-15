@@ -159,11 +159,14 @@ You need to update the revisit file to add sequence 22
 python updat_revisits.py --save True 
 ```
 
-To create the new poses
+To create the new poses and positives pairs
 ```highlight
 python save_poses_22.py --save True --data_path **kitti_dir_path**
 ```
 
+```highlight
+python save_positive_per_seq.py --save True --data_path **kitti_dir_path**
+```
 
 # Installation of LoGG3D-Net
 
