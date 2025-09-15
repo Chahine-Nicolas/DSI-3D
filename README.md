@@ -146,6 +146,13 @@ done
 
 shopt -u nullglob
 ```
+You may check that your last bin file is named "018235.bin" 
+and that 
+```highlight
+ls -1 | wc -l
+```
+return 18236
+
 
 # Installation of LoGG3D-Net
 
