@@ -91,7 +91,6 @@ shopt -u nullglob
 ```highlight
 shopt -s nullglob
 
-# Loop over all .bin files in 02/velodyne
 for file in 05/velodyne/*.bin; do
     base_value=$(basename "$file" .bin)    
     base_value=${base_value#0}             
@@ -106,7 +105,6 @@ shopt -u nullglob
 ```highlight
 shopt -s nullglob
 
-# Loop over all .bin files in 02/velodyne
 for file in 06/velodyne/*.bin; do
     base_value=$(basename "$file" .bin)    
     base_value=${base_value#0}             
@@ -122,7 +120,6 @@ shopt -u nullglob
 ```highlight
 shopt -s nullglob
 
-# Loop over all .bin files in 02/velodyne
 for file in 07/velodyne/*.bin; do
     base_value=$(basename "$file" .bin)    
     base_value=${base_value#0}             
@@ -138,7 +135,6 @@ shopt -u nullglob
 ```highlight
 shopt -s nullglob
 
-# Loop over all .bin files in 02/velodyne
 for file in 08/velodyne/*.bin; do
     base_value=$(basename "$file" .bin)    
     base_value=${base_value#0}             
