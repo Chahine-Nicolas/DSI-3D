@@ -63,7 +63,7 @@ After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and
 # DSI-3D Checkpoint
 coming soon
 
-# DSI-3D Checkpoint
+# GIT-BASE-COCO
 Install GIT model
 ```highlight
 module load anaconda-py3/2023.03
