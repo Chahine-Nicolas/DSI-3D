@@ -26,7 +26,7 @@ conda activate DSI_3D
 ```highlight
 conda install pytorch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.8 -c pytorch -c nvidia
 conda install -c anaconda cudatoolkit
-conda install transformers
+conda install transformers==4.32.1
 export PYTHONUSERBASE=/gpfswork/rech///install/sandbox
 pip install --user bitsandbytes
 pip install --user git+https://github.com/huggingface/accelerate.git
@@ -59,6 +59,18 @@ Update the dataset paths in LoGG3D-Net/config/train_config.py and LoGG3D-Net/con
 
 After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and place each one inside its corresponding sequence folder (00/, 02/, …).
 
+
+# DSI-3D Checkpoint
+coming soon
+
+# DSI-3D Checkpoint
+Install GIT model
+```highlight
+module load anaconda-py3/2023.03
+conda activate DSI_3D
+pip install huggingface_hub
+huggingface-cli download microsoft/git-base-coco --local-dir ./git-base-coco
+```
 
 ## Building the sequence 22
 
@@ -167,6 +179,8 @@ python save_poses_22.py --save True --data_path **kitti_dir_path**
 ```highlight
 python save_positive_per_seq.py --save True --data_path **kitti_dir_path**
 ```
+
+
 
 # Installation of LoGG3D-Net
 
@@ -369,8 +383,7 @@ You may need to change LABEL_MODE to choose an indexation strategy.
 ```highlight
 source train.sh
 ```
-# Checkpoint
-coming soon
+
 
 
 # Inference
