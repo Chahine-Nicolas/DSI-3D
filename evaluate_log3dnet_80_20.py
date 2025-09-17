@@ -107,6 +107,7 @@ class Timer(object):
             return self.diff
 
 ""
+
 def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, tokenizer, cfg, checkpoint_dir, checkp_to_eval, prefix_dict):
     print("eval lognet")
 
@@ -120,7 +121,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     revisit_criteria=3
     not_revisit_criteria=20
     skip_time=30
-    revisit_json_file = 'is_revisit_D-{}_T-{}.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
+    revisit_json_file = 'is_revisit_D-{}_T-{}_v2.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
         int(revisit_criteria), int(skip_time))
     cd_thresh_min=0.001
     cd_thresh_max=5 # au lieu de 1
@@ -205,7 +206,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
 
     ### Restrict decod vocab
     LIK = []
-    ID_MAX_LENGTH=18
+    ID_MAX_LENGTH=10
     if eval_set.labeltype == 'gps' :
         for ii in db_seen_ids : LIK.append(tokenizer(eval_set.label2gps(ii),padding="max_length",max_length=ID_MAX_LENGTH).input_ids) 
     elif eval_set.labeltype == 'hierarchical' :

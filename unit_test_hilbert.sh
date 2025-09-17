@@ -19,14 +19,8 @@ DO_DUMP_DICT_GT="False"
 DO_PREPROCESS="False"
 ## Old
 
-DO_PREPROCESS_ID=False
-
 ## Dataset_len
 DATASET_LEN=-1
-#DATASET_LEN=4512 #-1 #512
-#DATASET_LEN=512
-#DATASET_LEN=256
-
 
 ## Eval
 EVAL_STEP=2
@@ -40,11 +34,7 @@ NUM_TRAIN_EPOCH=10000
 LABEL_MODE="hilbert"
 #LABEL_MODE="label"
 #LABEL_MODE="hierarchical"
-#LABEL_MODE="mixte"
 
-#EXTRA_TAG="new_v4"
-#EXTRA_TAG="pos1_norm1"
-#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_22_80_20_contrast_quad_hilbert_suite_16600"
 
 EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quad_hilbert"
 #EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_02_80_20_contrast_quad_hilbert"
@@ -52,12 +42,12 @@ EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quad_hilbert"
 #EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_06_80_20_contrast_quad_hilbert"
 #EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_07_80_20_contrast_quad_hilbert"
 #EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quad_hilbert"
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_22_80_20_contrast_quad_hilbert_suite_16600"
 
 TRAINER_CHECKPOINT="False"
 
-
 EVAL_CHECKPOINT="/lustre/fswork/projects/rech/dki/ujo91el/checkpoints/${EXTRA_TAG}/"
-#EVAL_CHECKPOINT="False"s
+
 
 eval_chkt="checkpoint-7300" #00
 #eval_chkt="checkpoint-9200" #02
@@ -65,14 +55,13 @@ eval_chkt="checkpoint-7300" #00
 #eval_chkt="checkpoint-1800" #06
 #eval_chkt="checkpoint-2700" #07
 #eval_chkt="checkpoint-7600" #08
+#eval_chkt="checkpoint-27900" #22
 
-#CHECKPOINT=ckpts/gd_mae_pretrain_kitti.pth
 CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
+CHECKPOINT=None
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
-#EXTRA_TAG="train"
-
 
 ID_MAX_LENGTH=10
 
@@ -120,14 +109,6 @@ esac
 
 export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 
-# if [ "${DO_PREPROCESS_ID}" = "True" ]; then
-#     python -m pdb preprocess_datasets.py \
-# 	   --launcher none \
-# 	   --cfg_file ./config_loggnet_cross_eval.yaml \
-# 	   --workers 1
-# fi
-
-
 python -m pdb main_80_20.py \
        --launcher none \
        --cfg_file ${CONFIG_NAME} \
@@ -162,14 +143,3 @@ python -m pdb main_80_20.py \
        --eval_chkt ${eval_chkt}\
        --logging_steps 1 \
        --fix_random_seed 666 \
-
-        #> out_${MODEL_NAME}.txt 2>&1
-#       --use_sop True \
-#       --use_sop False \
-#       --cfg_file ./config_loggnet_cross_eval.yaml \
-#       --resume_from_checkpoint ${WORK}/out/dsi/checkpoint-300/ \
-
-# python -m pdb preprocess_datasets.py \
-#        --launcher none \
-#        --cfg_file ./config_loggnet_cross_eval.yaml \
-#        --workers 1 \
