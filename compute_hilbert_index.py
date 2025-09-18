@@ -42,7 +42,7 @@ def main(eval_seq: int, p: int, save: bool, data_path: str):
     ##################################
 
     if save:
-        json_path = os.path.join(sequence_path, f"hilbert_{p}.json")
+        json_path = os.path.join(sequence_path, f"hilbert.json")
         with open(json_path, "w") as json_file:
             json.dump(dict_hilbert, json_file)
         print("docid_map saved at", json_path)
