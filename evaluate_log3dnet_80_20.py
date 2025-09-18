@@ -339,7 +339,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             gps_data = load_json(sequence_path + "gps.json") if eval_set.labeltype == 'gps' else None
             hilbert_data = load_json(sequence_path + "hilbert.json") if eval_set.labeltype == 'hilbert' else None
             if eval_seq =="06":
-                hilbert_data = load_json(sequence_path + "hilbert_16.json") if eval_set.labeltype == 'hilbert' else None
+                hilbert_data = load_json(sequence_path + "hilbert.json") if eval_set.labeltype == 'hilbert' else None
 
             
             # Process based on label type
