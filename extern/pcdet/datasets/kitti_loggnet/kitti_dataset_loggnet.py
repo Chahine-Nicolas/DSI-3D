@@ -1,7 +1,3 @@
-#####################################################################################
-#####################################################################################
-#####################################################################################
-
 import numpy as np
 from ..dataset import DatasetTemplate
 from ..dsi_datasets import DSIDatasets
@@ -112,7 +108,7 @@ class KittiDataset_2012(DatasetTemplate,DSIDatasets):
         self.positions_database = self._load_positions()
 
         # Load hierarchical labels
-        #self.hierarchical_label, self.inv_hierarchical_label = self._load_json_labels('hierarchical_indexing.json')
+        self.hierarchical_label, self.inv_hierarchical_label = self._load_json_labels('hierarchical.json')
 
         # Load GPS labels
         #self.gps_label, self.inv_gps_label = self._load_json_labels('dict_gps_2_label_v2.json')

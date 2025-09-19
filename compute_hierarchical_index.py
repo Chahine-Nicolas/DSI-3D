@@ -94,10 +94,13 @@ def compute_hierarchical_clustering(eval_seq, data_path, save):
     for i in range(len(J)):
         print(f"Document {i}: Identifier {J[i]}")
 
+    #docid_map = {v: k for k, v in docid_map.items()}
+
     json_path = sequence_path + '/hierarchical.json'
     # # Print the generated identifiers
     for doc_idx, doc_id in docid_map.items():
         print(f"Document {doc_idx}: Identifier {doc_id}")
+        
 
     if save:
         with open(json_path, "w") as json_file   :

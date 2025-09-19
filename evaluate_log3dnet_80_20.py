@@ -8,11 +8,7 @@ import logging
 import json
 import torch
 import math
-#from pathlib import Path
 import matplotlib.pyplot as plt
-#####################################################################################
-# Load poses
-# ####################################################################################
 import time
 
 ch = logging.StreamHandler(sys.stdout)
@@ -121,7 +117,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     revisit_criteria=3
     not_revisit_criteria=20
     skip_time=30
-    revisit_json_file = 'is_revisit_D-{}_T-{}_v2.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
+    revisit_json_file = 'is_revisit_D-{}_T-{}.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
         int(revisit_criteria), int(skip_time))
     cd_thresh_min=0.001
     cd_thresh_max=5 # au lieu de 1
@@ -277,20 +273,14 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         if eval_set.labeltype != 'log3dnet' :
             prep_timer.tic()   
             input_data = data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1))) 
-            #input_data = all_input_data[query_idx]
             prep_timer.toc()
-            #input_data = input_data_old 
-  
-            # Efficient model inference
+            
             ret_timer.tic()
             with torch.no_grad():
                 batch_beams_dict = model.generate(
-                        #pixel_values=None,
-                        #pixel_values=input_data['pixel_values'],
                         pixel_values=input_data['pixel_values'],
                         lidar_values=input_data['lidar_values'],
                         points=None,
-                        #points=inputs['lidar_values']['points'],
                         max_length=ID_MAX_LENGTH,
                         num_beams=num_beams,
                         num_return_sequences=num_beams,
@@ -304,11 +294,9 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
                         output_scores = True,
                         )
             ret_timer.toc()
-            ##################################
+  
             
-        
-            #print("query_idx ", query_idx)
-            #continue
+     
             batch_beams = batch_beams_dict['sequences']
             seq_score = batch_beams_dict['sequences_scores'].reshape([-1, num_beams])
             res = _pad_tensors_to_max_len(input_data['labels'], ID_MAX_LENGTH,tokenizer)
@@ -338,8 +326,8 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             # Load JSON files when needed
             gps_data = load_json(sequence_path + "gps.json") if eval_set.labeltype == 'gps' else None
             hilbert_data = load_json(sequence_path + "hilbert.json") if eval_set.labeltype == 'hilbert' else None
-            if eval_seq =="06":
-                hilbert_data = load_json(sequence_path + "hilbert.json") if eval_set.labeltype == 'hilbert' else None
+
+            hierar_data = load_json(sequence_path + "hierarchical.json") if eval_set.labeltype == 'hilbert' else None
 
             
             # Process based on label type
@@ -350,8 +338,6 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
                 nearest_idx = nearest_ids[0]
             
             elif eval_set.labeltype == 'hierarchical':
-                #nearest_idx = int(eval_set.inv_hierarchical_label[label_ids[0]])
-                #nearest_ids = [int(eval_set.inv_hierarchical_label[label_id]) for label_id in label_ids]
                 nearest_ids = [int(eval_set.inv_hierarchical_label.get(label_id, -1)) for label_id in label_ids]
                 nearest_idx = nearest_ids[0]
             

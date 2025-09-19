@@ -16,15 +16,11 @@ DO_EVAL_PARTIAL="False"
 ## Prepreocessing
 DO_DUMP_DICT_GT="False"
 DO_PREPROCESS="False"
-## Old
 
 DO_PREPROCESS_ID=False
 
 ## Dataset_len
 DATASET_LEN=-1
-#DATASET_LEN=4512 #-1 #512
-#DATASET_LEN=512
-#DATASET_LEN=256
 
 
 ## Eval
@@ -39,30 +35,31 @@ NUM_TRAIN_EPOCH=10000
 #LABEL_MODE="hilbert"
 #LABEL_MODE="label"
 LABEL_MODE="hierarchical"
-#LABEL_MODE="mixte"
 
-#EXTRA_TAG="new_v4"
-#EXTRA_TAG="pos1_norm1"
-#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_22_80_20_contrast_quad_hilbert_suite_16600"
-EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_06_80_20_contrast_quad_hierar"
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quad_hierar" # 00
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_02_80_20_contrast_quad_hierar" # 02
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_05_80_20_contrast_quad_hierar" # 02
+EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_06_80_20_contrast_quad_hierar" # 06
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_07_80_20_contrast_quadhierar" # 07
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quad_hierar" # 08
 
 
 TRAINER_CHECKPOINT="False"
 
 
 EVAL_CHECKPOINT="/lustre/fswork/projects/rech/dki/ujo91el/checkpoints/${EXTRA_TAG}/"
-#EVAL_CHECKPOINT="False"s
 
-eval_chkt="checkpoint-5000"
+#eval_chkt="checkpoint-8000" # 00
+#eval_chkt="checkpoint-7000" # 02
+#eval_chkt="checkpoint-4900" # 05
+eval_chkt="checkpoint-5000" # 06
+#eval_chkt="checkpoint-2800" # 07
+#eval_chkt="checkpoint-5400" # 08
 
 
-#CHECKPOINT=ckpts/gd_mae_pretrain_kitti.pth
-#CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
-#EXTRA_TAG="train"
-
 
 ID_MAX_LENGTH=10
 
