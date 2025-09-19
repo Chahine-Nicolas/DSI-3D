@@ -107,15 +107,6 @@ esac
 
 export 'PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512'
 
-# if [ "${DO_PREPROCESS_ID}" = "True" ]; then
-#     python -m pdb preprocess_datasets.py \
-# 	   --launcher none \
-# 	   --cfg_file ./config_loggnet_cross_eval.yaml \
-# 	   --workers 1
-# fi
-
-
-#python  -m pdb  main.py \
 python -m pdb main_80_20.py \
        --launcher none \
        --cfg_file ${CONFIG_NAME} \
@@ -150,15 +141,3 @@ python -m pdb main_80_20.py \
        --eval_chkt ${eval_chkt}\
        --logging_steps 1 \
        --fix_random_seed 666 \
-
-
-        #> out_${MODEL_NAME}.txt 2>&1
-#       --use_sop True \
-#       --use_sop False \
-#       --cfg_file ./config_loggnet_cross_eval.yaml \
-#       --resume_from_checkpoint ${WORK}/out/dsi/checkpoint-300/ \
-
-# python -m pdb preprocess_datasets.py \
-#        --launcher none \
-#        --cfg_file ./config_loggnet_cross_eval.yaml \
-#        --workers 1 \

@@ -1,6 +1,5 @@
 ## Change
-#export LOG3DNET_DIR='/LoGG3D-Net/'
-export LOG3DNET_DIR='/lustre/fswork/projects/rech/dki/ujo91el/code/these_place_reco/LoGG3D-Net/'
+export LOG3DNET_DIR='/LoGG3D-Net/'
 
 ## Model
 #MODEL_NAME=blip2
@@ -40,26 +39,27 @@ LABEL_MODE="gps"
 #LABEL_MODE="hilbert"
 #LABEL_MODE="label"
 #LABEL_MODE="hierarchical"
-#LABEL_MODE="mixte"
 
-#EXTRA_TAG="new_v4"
-#EXTRA_TAG="pos1_norm1"
-#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_22_80_20_contrast_quad_hilbert_suite_16600"
-EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quad"
-#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast"
+EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quad" # 00
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_02_80_20_contrast_quad" # 02
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_05_80_20_contrast_quad" # 05
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_06_80_20_contrast_quad" # 06
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_07_80_20_contrast_quad" # 07
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quad" # 08
+
 
 TRAINER_CHECKPOINT="False"
 
 
 EVAL_CHECKPOINT="/lustre/fswork/projects/rech/dki/ujo91el/checkpoints/${EXTRA_TAG}/"
-#EVAL_CHECKPOINT="False"s
 
-#eval_chkt="checkpoint-8200"
-eval_chkt="checkpoint-9300"
+eval_chkt="checkpoint-9300" # 00
+#eval_chkt="checkpoint-9600" # 02
+#eval_chkt="checkpoint-11000" # 05
+#eval_chkt="checkpoint-1400" # 06
+#eval_chkt="checkpoint-1800" # 07
+#eval_chkt="checkpoint-8200" # 08
 
-
-#CHECKPOINT=ckpts/gd_mae_pretrain_kitti.pth
-#CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
