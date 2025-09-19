@@ -36,23 +36,28 @@ NUM_TRAIN_EPOCH=10000
 LABEL_MODE="label"
 #LABEL_MODE="hierarchical"
 
-EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quadlabel"
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_00_80_20_contrast_quadlabel" #00
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_02_80_20_contrast_quadlabel" #02
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_05_80_20_contrast_quadlabel" #05
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_06_80_20_contrast_quadlabel" #06 
+EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_07_80_20_contrast_quadlabel" #07 
+#EXTRA_TAG="${MODEL_NAME}_${LABEL_MODE}_seq_08_80_20_contrast_quadlabel" #08 
 
 
 TRAINER_CHECKPOINT="False"
 
 
 EVAL_CHECKPOINT="/lustre/fswork/projects/rech/dki/ujo91el/checkpoints/${EXTRA_TAG}/"
-#EVAL_CHECKPOINT="False"s
 
-eval_chkt="checkpoint-8500"
-
-#CHECKPOINT=/gpfswork/rech/dki/ujo91el/code/dsi-pc/ckpts/gd_mae_finetune_kitti.pth 
+#eval_chkt="checkpoint-6400" #00
+#eval_chkt="checkpoint-6600" #02
+#eval_chkt="checkpoint-8100" #05
+#eval_chkt="checkpoint-2900" #06
+eval_chkt="checkpoint-2000" #07
+#eval_chkt="checkpoint-8500" #08
 
 ## ========== Config  ========
 CONFIG_NAME=config_loggnet_${LABEL_MODE}.yaml
-#EXTRA_TAG="train"
-
 
 ID_MAX_LENGTH=10
 
