@@ -347,7 +347,8 @@ python -m pdb compute_gps_index.py --eval_seq 22 --gpsround 100 --data_path **ki
 ```
 ## Dataset indexing (hierarchical)
 You can compute the hierarchical indexes with:
-However, if you want to evaluate our model trained with the hierarchical setup, you will need to use our dictionary file (hierarchical.json).
+However, if you want to evaluate our model trained with the hierarchical setup, you will need to use our dictionary file inside hierarchical_indexes.
+You have have to copy paste them into their respectectives sequences folders. 
 ```highlight
 python compute_hierarchical_index.py --eval_seq 0 --data_path **kitti_dir_path** --save True
 ```
