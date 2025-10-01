@@ -1,15 +1,17 @@
-# DSI-3D 
+## Overview
 
-This repository contains the code used for the CBMI 2025 paper "DSI-3D: Differentiable Search Index
-for point clouds retrieval". Our implementation was developed and tested on the Jean Zay HPC cluster.
+**DSI-3D** is a differentiable search index for fast and accurate **3D point cloud retrieval**, extending the [Differentiable Search Index (DSI)](https://arxiv.org/abs/2205.14100) to 3D spatial data.  
+We leverage the [GIT architecture](https://arxiv.org/abs/2205.14100) and [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) descriptors to enable **efficient auto-regressive retrieval of 3D scenes**.
 
-We extend the Differentiable Search Index (DSI) to accelerate the retrieval phase of of 3D point clouds using the
-[GIT](https://arxiv.org/abs/2205.14100.pdf) architecture.
+DSI-3D was developed for the paper:
+
+*"DSI-3D: Differentiable Search Index for Point Cloud Retrieval"* (CBMI 2025).
 
 The model is trained to associate point cloud representations, using [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main), with corresponding labels. 
 During inference, it generates labels auto-regressively via beam search.
 
 ![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
+
 
 # NEWS
 
@@ -17,8 +19,15 @@ During inference, it generates labels auto-regressively via beam search.
 
 # Installation of the DSI-3D environment
 
+Our implementation was developed and tested on the Jean Zay HPC cluster.
+You can install DSI-3D either locally or on the Jean Zay HPC cluster.
+
+On Jean Zay HPC cluster:
 ```highlight
 module load anaconda-py3/2023.03
+```
+
+```highlight
 conda create -y -n DSI_3D python=3.10
 conda activate DSI_3D
 ```
@@ -45,7 +54,6 @@ pip install --user pycocotools SharedArray terminaltables
 pip install --user torchvision
 pip install --user timm
 pip install --user einops
-#pip install --user torch-scatter
 pip install --user torch-scatter==2.1.1 -f https://data.pyg.org/whl/torch-2.0.1+cu118.html
 pip install --user hostlist
 pip install --user hilbertcurve
@@ -400,23 +408,23 @@ conda activate DSI_3D
 For Naively Structured String identifiers
 
 ```highlight
-source unit_test_label.sh
+source eval_label.sh
 ```
 
 For Semantically Structured identifiers
 
 ```highlight
-source unit_test_hierar.sh
+source eval_hierar.sh
 ```
 
 For Positional Structured identifiers with coordinates interlacing
 
 ```highlight
-source unit_test_gps.sh
+source eval_gps.sh
 ```
 
 For Positional Structured identifiers with Hilbert curve indexing on the sequence 00
 
 ```highlight
-source unit_test_hilbert.sh
+source eval_hilbert.sh
 ```
