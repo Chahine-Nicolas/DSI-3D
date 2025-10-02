@@ -117,7 +117,7 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
     revisit_criteria=3
     not_revisit_criteria=20
     skip_time=30
-    revisit_json_file = 'is_revisit_D-{}_T-{}.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
+    revisit_json_file = 'is_revisit_D-{}_T-{}_v2.json'.format(          # 'is_revisit_D-{}_T-{}_v2.json' with seq 22
         int(revisit_criteria), int(skip_time))
     cd_thresh_min=0.001
     cd_thresh_max=5 # au lieu de 1
@@ -642,9 +642,9 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         save_pickle(num_false_negative, save_dir +
                     '/num_false_negative.pickle')
 
-    with open('results_dsi3d_'+eval_seq+'.json', 'w') as f:
+    with open('results_dsi3d_'+eval_seq+'_'+eval_set.labeltype+'.json', 'w') as f:
         json.dump(dictio_to_save, f)
-    print("saved at results_dsi3d_'+eval_seq+'.json")
+    print("saved at results_dsi3d_"+eval_seq+'_'+eval_set.labeltype+'.json')
 
 
     ################################################################################
