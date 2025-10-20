@@ -15,7 +15,7 @@ During inference, it generates labels auto-regressively via beam search.
 
 # NEWS
 
-[2025-0X] code release
+[2025-10] code release
 
 # Installation of the DSI-3D environment
 
