@@ -1,0 +1,25 @@
+## Overview
+
+**DSI-3D** is a differentiable search index for fast and accurate **3D point cloud retrieval**, extending the [Differentiable Search Index (DSI)](https://arxiv.org/abs/2205.14100) to 3D spatial data.  
+We leverage the [GIT architecture](https://arxiv.org/abs/2205.14100) and [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) descriptors to enable **efficient auto-regressive retrieval of 3D scenes**.
+
+DSI-3D was developed for the paper:
+
+*"DSI-3D: Differentiable Search Index for Point Cloud Retrieval"* (CBMI 2025).
+
+The model is trained to associate point cloud representations, using [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main), with corresponding labels. 
+During inference, it generates labels auto-regressively via beam search.
+
+![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
+
+
+# NEWS
+
+[2025-10] code release
+
+# Installation of the DSI-3D environment
+
+Our implementation was developed and tested on the Jean Zay HPC cluster.
+You can install DSI-3D either locally or on the Jean Zay HPC cluster.
+
+
