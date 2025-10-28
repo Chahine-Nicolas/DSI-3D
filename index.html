@@ -1,25 +1,62 @@
-## Overview
-
-**DSI-3D** is a differentiable search index for fast and accurate **3D point cloud retrieval**, extending the [Differentiable Search Index (DSI)](https://arxiv.org/abs/2205.14100) to 3D spatial data.  
-We leverage the [GIT architecture](https://arxiv.org/abs/2205.14100) and [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main) descriptors to enable **efficient auto-regressive retrieval of 3D scenes**.
-
-DSI-3D was developed for the paper:
-
-*"DSI-3D: Differentiable Search Index for Point Cloud Retrieval"* (CBMI 2025).
-
-The model is trained to associate point cloud representations, using [LoGG3D-Net](https://github.com/csiro-robotics/LoGG3D-Net/tree/main), with corresponding labels. 
-During inference, it generates labels auto-regressively via beam search.
-
-![plot](https://github.com/Chahine-Nicolas/DSI-3D/blob/main/architecture.png?raw=true)
+---
+# Feel free to add content and custom Front Matter to this file.
+# To modify the layout, see https://jekyllrb.com/docs/themes/#overriding-theme-defaults
+layout: page
+header_img : /assets/header.jpg
+---
 
 
-# NEWS
+![]({{page.header_img | relative_url}})
 
-[2025-10] code release
+<br/>
 
-# Installation of the DSI-3D environment
+[Chahine-Nicolas Zede](https://www.umr-lastig.fr/Chahine-Nicolas-Zede/),
+[Laurent Caraffa](https://www.umr-lastig.fr/laurent-caraffa/),
+[Valérie Gouet-Brunet](https://www.umr-lastig.fr/vgouet/),
+{: style="color:gray; font-size: 120%; text-align: center;"}
 
-Our implementation was developed and tested on the Jean Zay HPC cluster.
-You can install DSI-3D either locally or on the Jean Zay HPC cluster.
+# Pdf
+Coming soon
 
+# Abstract
+Retrieval in 3D point clouds is a challenging task that consists in retrieving the most similar point clouds to a given query within a reference of 3D points. Current methods focus on comparing descriptors of point clouds in order to identify similar ones, without any particular index structure. Due to the complexity of this latter step, here we focus on the acceleration of the retrieval by adapting the Differentiable Search Index (DSI), a transformer-based approach initially designed for text information retrieval, for 3D point cloud retrieval. Our approach generates 1D identifiers based on the point descriptors, enabling direct retrieval in constant time. To adapt DSI to 3D data, we integrate Vision Transformers to map descriptors to these identifiers while incorporating positional and semantic encoding. The approach is evaluated for place recognition on a public benchmark comparing its retrieval capabilities against state-of-the-art methods, in terms of quality and speed of returned point clouds.
 
+# Code
+[Github](https://github.com/Chahine-Nicolas/DSI-3D)
+
+# News
+ - 2025-28-10 : Page online
+
+# References
+{% highlight bibtex %}
+@inproceedings{caraffa:hal-03380593,
+  TITLE = {Efficiently Distributed Watertight Surface Reconstruction},
+  AUTHOR = {CARAFFA, Laurent and Marchand, Yanis and Br{\'e}dif, Mathieu and Vallet, Bruno},
+  URL = {https://hal.archives-ouvertes.fr/hal-03380593},
+  BOOKTITLE = {2021 International Conference on 3D Vision (3DV)},
+  ADDRESS = {London, United Kingdom},
+  YEAR = {2021},
+  MONTH = Dec,
+  PDF = {https://hal.archives-ouvertes.fr/hal-03380593/file/2021216131.pdf},
+  HAL_ID = {hal-03380593},
+  HAL_VERSION = {v1},
+}
+{% endhighlight %}
+
+{% highlight bibtex %}
+@inproceedings{caraffa:hal-02535021,
+  TITLE = {Tile \\& Merge: Distributed Delaunay Triangulations for Cloud Computing},
+  AUTHOR = {CARAFFA, Laurent and Memari, Pooran and Yirci, Murat and Br{\'e}dif, Mathieu},
+  URL = {https://hal.archives-ouvertes.fr/hal-02535021},
+  BOOKTITLE = {IEEE Big Data 2019},
+  ADDRESS = {Los Angeles, United States},
+  YEAR = {2019},
+  MONTH = Dec,
+  DOI = {10.1109/BigData47090.2019.9006534},
+  KEYWORDS = {Computational Geometry ; Delaunay ; Cloud computing ; Spark},
+  PDF = {https://hal.archives-ouvertes.fr/hal-02535021/file/Out_of_Core_DT_Short_paper_Camera_Ready.pdf},
+  HAL_ID = {hal-02535021},
+  HAL_VERSION = {v1},
+}
+{% endhighlight %}
+{% include text-expand.html %}
