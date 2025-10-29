@@ -1,5 +1,5 @@
 DATASET: 'KittiDataset_2012'
-SEQ: '00'
+SEQ: '08'
 DATA_PATH: '/lustre/fsn1/worksf/projects/rech/dki/ujo91el/datas/datasets/sequences/' # $WORKSF
 
 BACKEND: &BACKEND

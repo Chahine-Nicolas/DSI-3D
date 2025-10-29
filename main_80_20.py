@@ -975,11 +975,12 @@ def main():
                 print("resume_from_checkpoint : " + previous_model_path)
             trainer.train(resume_from_checkpoint=previous_model_path)
             is_trained = True
-        
+
+        """
         if is_trained :
             trainer.save_model(cur_model_path)
             trainer.state.save_to_json(os.path.join(cur_model_path, "trainer_state.json")) 
-
+        """
     if do_eval  : 
         del train_set
         if args.local_rank == 0 :

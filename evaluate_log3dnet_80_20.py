@@ -274,7 +274,8 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             prep_timer.tic()   
             input_data = data_collator(torch.utils.data.Subset(eval_subset,range(query_idx, query_idx+1))) 
             prep_timer.toc()
-            
+            num_beams = 10
+            print('num_beams ', num_beams)
             ret_timer.tic()
             with torch.no_grad():
                 batch_beams_dict = model.generate(
@@ -334,20 +335,35 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
             if eval_set.labeltype in ['gps', 'hilbert']:
                 data = gps_data if eval_set.labeltype == 'gps' else hilbert_data
                 #nearest_ids = [data[label_id] for label_id in label_ids]
-                nearest_ids = [data.get(label_id, -1) for label_id in label_ids]
+                nearest_ids = [data.get(label_id, " ") for label_id in label_ids]
                 nearest_idx = nearest_ids[0]
             
             elif eval_set.labeltype == 'hierarchical':
-                nearest_ids = [int(eval_set.inv_hierarchical_label.get(label_id, -1)) for label_id in label_ids]
+                nearest_ids = [eval_set.inv_hierarchical_label.get(label_id, ' ') for label_id in label_ids]
                 nearest_idx = nearest_ids[0]
             
             else:
                 nearest_ids = label_ids
                 nearest_idx = nearest_ids[0]
-            
+
+            """
             place_candidates = [seen_poses[int(nearest_id)] for nearest_id in nearest_ids]
-            place_candidate = place_candidates[0]
             
+            """
+
+            place_candidates = []
+            for nearest_id in nearest_ids:
+                if nearest_id.strip() == '':
+                    place_candidates.append(np.array([-100, -100, -100]))
+                else:
+                    try:
+                        place_candidates.append(seen_poses[int(nearest_id)])
+                    except Exception:
+                        # if something goes wrong with int() or index
+                        place_candidates.append(np.array([-100, -100, -100]))
+
+            place_candidate = place_candidates[0]
+
             # Compute distances
             p_dist = np.linalg.norm(query_pose - place_candidate)
             p_dists, hits_clos = compute_distances(query_pose, place_candidates)
@@ -642,9 +658,10 @@ def eval_log3dnet(model, eval_subset, eval_set, eval_loader, data_collator, toke
         save_pickle(num_false_negative, save_dir +
                     '/num_false_negative.pickle')
 
-    with open('results_dsi3d_'+eval_seq+'_'+eval_set.labeltype+'.json', 'w') as f:
-        json.dump(dictio_to_save, f)
-    print("saved at results_dsi3d_"+eval_seq+'_'+eval_set.labeltype+'.json')
+    if save_results:
+        with open('results_dsi3d_'+eval_seq+'_'+eval_set.labeltype+'.json', 'w') as f:
+            json.dump(dictio_to_save, f)
+        print("saved at results_dsi3d_"+eval_seq+'_'+eval_set.labeltype+'.json')
 
 
     ################################################################################
