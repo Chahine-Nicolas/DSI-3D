@@ -69,7 +69,8 @@ After downloading, rename the pose files (00.txt, 02.txt, etc.) to poses.txt and
 
 
 # DSI-3D Checkpoint
-coming soon
+
+[Download here](https://huggingface.co/Chahine-Nicolas/DSI-3D/tree/main)
 
 # GIT-BASE-COCO
 Install GIT model
