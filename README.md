@@ -394,8 +394,6 @@ You may need to change LABEL_MODE to choose an indexation strategy.
 source train.sh
 ```
 
-
-
 # Inference
 
 To reproduce the results obtained with our pretrained model, simply run the provided .sh scripts.
@@ -429,3 +427,19 @@ For Positional Structured identifiers with Hilbert curve indexing on the sequenc
 ```highlight
 source eval_hilbert.sh
 ```
+
+## Citation
+
+If you find this repository useful in your research, please cite:
+
+```bibtex
+@inproceedings{zede2025dsi,
+  title={DSI-3D: Differentiable Search Index for Point Clouds Retrieval},
+  author={Zede, Chahine-Nicolas and Caraffa, Laurent and Gouet-Brunet, Val{\'e}rie},
+  booktitle={2025 International Conference on Content-Based Multimedia Indexing (CBMI)},
+  pages={1--7},
+  year={2025},
+  organization={IEEE}
+}
+```
+
